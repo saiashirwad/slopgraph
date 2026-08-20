@@ -18,6 +18,7 @@ pub fn run(modules: &ModuleGraph, calls: &CallGraph, options: &Options) -> Vec<F
     findings.extend(crate::near_duplicate::detect(modules, calls, options));
     findings.extend(crate::tramp_data::detect(modules, calls, options));
     findings.extend(crate::type_clone::detect(modules, calls, options));
+    findings.extend(crate::unreaching_test::detect(modules, calls, options));
     findings.sort_by(|a, b| {
         a.location
             .file

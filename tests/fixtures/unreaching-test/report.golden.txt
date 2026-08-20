@@ -1,0 +1,88 @@
+src/multi_reached.ts
+
+FALSE SHARING
+subject: formatGreeting  (line 1)
+tests/multi.test.ts
+     │  one consumer group
+     ▼
+formatGreeting  ←── finding
+
+src/multi_unreached.ts
+
+FALSE SHARING
+subject: unusedFeature  (line 1)
+tests/multi.test.ts
+     │  one consumer group
+     ▼
+unusedFeature  ←── finding
+
+UNREACHABLE
+subject: unusedFeature  (line 1)
+unusedFeature  ←── finding
+
+src/reached.ts
+
+FALSE SHARING
+subject: calculateTotal  (line 1)
+tests/reached.test.ts
+     │  one consumer group
+     ▼
+calculateTotal  ←── finding
+
+src/repo.ts
+
+FALSE SHARING
+subject: queryData  (line 1)
+src/service.ts
+     │  one consumer group
+     ▼
+queryData  ←── finding
+
+src/service.ts
+
+FALSE SHARING
+subject: serviceAction  (line 3)
+src/index.ts
+     │  one consumer group
+     ▼
+serviceAction  ←── finding
+
+src/unreached.ts
+
+FALSE SHARING
+subject: unreachedProductionFn  (line 1)
+tests/unreached.test.ts
+     │  one consumer group
+     ▼
+unreachedProductionFn  ←── finding
+
+UNREACHABLE
+subject: unreachedProductionFn  (line 1)
+unreachedProductionFn  ←── finding
+
+tests/helper.ts
+
+FALSE SHARING
+subject: setupTestEnvironment  (line 1)
+tests/unreached.test.ts
+     │  one consumer group
+     ▼
+setupTestEnvironment  ←── finding
+
+tests/multi.test.ts
+
+UNREACHING TEST
+subject: src/multi_unreached.ts  (line 2)
+tests/multi.test.ts
+     │
+     ▼
+src/multi_unreached.ts  ←── finding
+
+tests/unreached.test.ts
+
+UNREACHING TEST
+subject: src/unreached.ts  (line 1)
+tests/unreached.test.ts
+     │
+     ▼
+src/unreached.ts  ←── finding

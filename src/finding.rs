@@ -10,6 +10,7 @@ pub enum Shape {
     TrampData,
     TypeClone,
     Unreachable,
+    UnreachingTest,
 }
 
 impl Shape {
@@ -22,6 +23,7 @@ impl Shape {
             Shape::TrampData => "TRAMP DATA",
             Shape::TypeClone => "TYPE CLONE",
             Shape::Unreachable => "UNREACHABLE",
+            Shape::UnreachingTest => "UNREACHING TEST",
         }
     }
 }

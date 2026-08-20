@@ -1,0 +1,154 @@
+src/dead.ts
+
+UNREACHABLE
+subject: src/dead.ts  (line 1)
+src/dead.ts  ←── finding
+
+src/duplicates.ts
+
+FALSE SHARING
+subject: processCustomerData  (line 1)
+src/index.ts
+     │  one consumer group
+     ▼
+processCustomerData  ←── finding
+
+NEAR-DUPLICATE
+subject: processCustomerData  (line 1)
+processCustomerData  ←── finding
+     │
+     ▼
+processSupplierData
+
+FALSE SHARING
+subject: processSupplierData  (line 17)
+src/index.ts
+     │  one consumer group
+     ▼
+processSupplierData  ←── finding
+
+src/pipeline.ts
+
+SINGLE-USE CHAIN
+subject: stepOne  (line 9)
+runPipeline   (exported, not in chain)
+     │
+     ▼
+stepOne  ←── finding
+     │
+     ▼
+stepTwo
+     │
+     ▼
+stepThree
+
+FALSE SHARING
+subject: runPipeline  (line 13)
+src/index.ts
+     │  one consumer group
+     ▼
+runPipeline  ←── finding
+
+src/service.ts
+
+FALSE SHARING
+subject: sharedService  (line 1)
+src/index.ts
+     │  one consumer group
+     ▼
+sharedService  ←── finding
+
+FALSE SHARING
+subject: testOnlyService  (line 5)
+tests/full.test.ts
+     │  one consumer group
+     ▼
+testOnlyService  ←── finding
+
+UNREACHABLE
+subject: deadServiceHelper  (line 9)
+deadServiceHelper  ←── finding
+
+src/tramp.ts
+
+FALSE SHARING
+subject: forwardData  (line 5)
+src/index.ts
+     │  one consumer group
+     ▼
+forwardData  ←── finding
+
+TRAMP DATA
+subject: payload  (line 5)
+forwardData  ←── finding
+     │  passes payload
+     ▼
+sink
+
+src/types.ts
+
+FALSE SHARING
+subject: UserProfile  (line 1)
+src/index.ts
+     │  one consumer group
+     ▼
+UserProfile  ←── finding
+
+TYPE CLONE
+subject: UserProfile  (line 1)
+UserProfile  ←── finding
+     │
+     ▼
+AccountRecord
+
+FALSE SHARING
+subject: AccountRecord  (line 7)
+src/index.ts
+     │  one consumer group
+     ▼
+AccountRecord  ←── finding
+
+src/unreached_prod.ts
+
+FALSE SHARING
+subject: unreachedProductionFn  (line 1)
+tests/unreaching.test.ts
+     │  one consumer group
+     ▼
+unreachedProductionFn  ←── finding
+
+UNREACHABLE
+subject: unreachedProductionFn  (line 1)
+unreachedProductionFn  ←── finding
+
+src/wrapper.ts
+
+EMPTY WRAPPER
+subject: emptyWrapper  (line 5)
+emptyWrapper  ←── finding
+     │  return only
+     ▼
+targetAction
+
+FALSE SHARING
+subject: wrapFirst  (line 9)
+src/index.ts
+     │  one consumer group
+     ▼
+wrapFirst  ←── finding
+
+FALSE SHARING
+subject: wrapSecond  (line 14)
+src/index.ts
+     │  one consumer group
+     ▼
+wrapSecond  ←── finding
+
+tests/unreaching.test.ts
+
+UNREACHING TEST
+subject: src/unreached_prod.ts  (line 1)
+tests/unreaching.test.ts
+     │
+     ▼
+src/unreached_prod.ts  ←── finding

@@ -194,3 +194,75 @@ fn type_clone_interfaces_and_type_aliases() {
     assert_golden("type-clone");
 }
 
+#[test]
+fn unreaching_test_golden_report() {
+    assert_golden("unreaching-test");
+}
+
+#[test]
+fn unreaching_test_negative_cases_verified() {
+    let dir = fixture("unreaching-test");
+    let report = slopgraph::analyze(&dir).unwrap();
+
+    // 1. Test helper import does not emit unreaching test
+    assert!(!report.contains("UNREACHING TEST\nsubject: tests/helper.ts"));
+
+    // 2. Production module importing production module does not emit unreaching test
+    assert!(!report.contains("UNREACHING TEST\nsubject: src/repo.ts"));
+
+    // 3. Reached production modules do not emit unreaching test
+    assert!(!report.contains("UNREACHING TEST\nsubject: src/reached.ts"));
+    assert!(!report.contains("UNREACHING TEST\nsubject: src/multi_reached.ts"));
+
+    // 4. Unreached imports emit expected findings
+    assert!(report.contains("tests/unreached.test.ts\n\nUNREACHING TEST\nsubject: src/unreached.ts  (line 1)"));
+    assert!(report.contains("tests/multi.test.ts\n\nUNREACHING TEST\nsubject: src/multi_unreached.ts  (line 2)"));
+}
+
+#[test]
+fn full_report_conformance_all_eight_shapes() {
+    assert_golden("full-report");
+
+    let dir = fixture("full-report");
+    let report = slopgraph::analyze(&dir).unwrap();
+
+    // Verify all 8 shape headings exist in the output
+    assert!(report.contains("\nUNREACHABLE\n"));
+    assert!(report.contains("\nSINGLE-USE CHAIN\n"));
+    assert!(report.contains("\nEMPTY WRAPPER\n"));
+    assert!(report.contains("\nFALSE SHARING\n"));
+    assert!(report.contains("\nNEAR-DUPLICATE\n"));
+    assert!(report.contains("\nTRAMP DATA\n"));
+    assert!(report.contains("\nTYPE CLONE\n"));
+    assert!(report.contains("\nUNREACHING TEST\n"));
+}
+
+#[test]
+fn full_report_production_flag_drops_test_roots() {
+    let dir = fixture("full-report");
+    let options = slopgraph::Options {
+        production: true,
+        ..Default::default()
+    };
+    let report = slopgraph::analyze_with_options(&dir, options).unwrap();
+
+    // testOnlyService was reachable by default via tests/full.test.ts, now unreachable
+    assert!(report.contains("src/service.ts\n\nFALSE SHARING\nsubject: sharedService"));
+    assert!(report.contains("UNREACHABLE\nsubject: testOnlyService  (line 5)"));
+    assert!(report.contains("UNREACHABLE\nsubject: src/unreached_prod.ts  (line 1)"));
+}
+
+#[test]
+fn full_report_include_exported_flag_includes_exported_chains() {
+    let dir = fixture("full-report");
+    let options = slopgraph::Options {
+        include_exported: true,
+        ..Default::default()
+    };
+    let report = slopgraph::analyze_with_options(&dir, options).unwrap();
+
+    assert!(report.contains("SINGLE-USE CHAIN\nsubject: runPipeline"));
+    assert!(report.contains("exportedStep\n     │\n     ▼\nleafStep"));
+}
+
+

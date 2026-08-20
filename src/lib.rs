@@ -15,6 +15,7 @@ mod tramp_data;
 mod tsgo;
 mod type_clone;
 mod unreachable;
+mod unreaching_test;
 
 pub use call_graph::{build as build_call_graph, CallGraph, FnNode, TypedEdge};
 pub use error::Error;
