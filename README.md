@@ -2,7 +2,7 @@
 
 Slopgraph is a read-only CLI for finding TypeScript code that only looks suspicious when you can see how the whole program hangs together.
 
-Point it at one `tsconfig.json`. Slopgraph builds a module graph from imports and exports, then a typed call graph from TypeScript's resolved signatures. It uses those graphs to find things a file-at-a-time lint rule cannot see: files no entry point reaches, helper chains with one caller per step, wrappers and parameters that only forward work, duplicated function and type shapes, exports that are shared in name only, and tests that import production code without ever reaching it.
+Point it at a `tsconfig.json` and it builds two graphs: a module graph from imports and exports, and a typed call graph from TypeScript's resolved signatures. Together they surface what a file-at-a-time lint rule cannot see: files no entry point reaches, helper chains with one caller per step, wrappers and parameters that only forward work, duplicated function and type shapes, exports that are shared in name only, and tests that import production code without ever reaching it.
 
 Here, **slop** means code—often generated or accumulated—that costs more to maintain than it earns. A finding is a lead for a human, not an instruction to delete code. Slopgraph does not rewrite source, assign a score, or fail a run just because it found something.
 
@@ -27,9 +27,9 @@ stepTwo
 stepThree
 ```
 
-The path is the evidence. `runPipeline` is shown so you can see where the chain starts, but the finding begins at `stepOne`: exported functions stay out of single-use chains by default.
+The path is the evidence. `runPipeline` is shown only to mark where the chain starts; the finding begins at `stepOne` because exported functions stay out of single-use chains by default.
 
-Slopgraph prints findings grouped by file. No findings means no output.
+Slopgraph prints findings grouped by file, and stays silent when it finds nothing.
 
 ## Install
 
@@ -81,7 +81,7 @@ slopgraph packages/api/tsconfig.json
 | `--include-exported`          | Allows exported functions to appear inside single-use chains.                                          |
 | `--color auto\|always\|never` | Controls terminal styling. `auto` is the default and respects `NO_COLOR`.                              |
 
-A successful analysis exits with status `0`, whether or not it found anything. Load, resolution, or compiler errors exit non-zero. The report is currently human text only; there is no JSON mode or autofix.
+A successful analysis exits `0` whether or not it found anything; load, resolution, or compiler errors exit non-zero. Output is human text only — there is no JSON mode or autofix.
 
 ## What it looks for
 
@@ -91,7 +91,7 @@ A successful analysis exits with status `0`, whether or not it found anything. L
 | **Single-use chain** | Two or more functions in sequence each have exactly one resolved caller. Exported functions are excluded unless `--include-exported` is set.                                                                                             |
 | **Empty wrapper**    | A function body consists only of one resolved call, optionally returned. Wrappers already explained by a single-use chain are not reported twice.                                                                                        |
 | **False sharing**    | Every importer of an exported symbol lives in the same directory. The symbol is public in syntax but may be local in practice.                                                                                                           |
-| **Near-duplicate**   | Two differently named, non-trivial functions have the same AST shape and strongly overlapping token windows after identifiers and literals are normalized. The current gates are at least 20 AST nodes and confidence of at least `0.7`. |
+| **Near-duplicate**   | Two differently named, non-trivial functions with the same AST shape and strongly overlapping token windows, after identifiers and literals are normalized. Gates: at least 20 AST nodes and confidence of at least `0.7`. |
 | **Tramp data**       | A parameter is never read locally and is used only as a direct argument to one or more resolved calls.                                                                                                                                   |
 | **Type clone**       | Two interfaces or object type aliases have the same field names, modifiers, and field types, with at least three fields and no inheritance/intersection link.                                                                            |
 | **Unreaching test**  | A test imports a production module, but no typed call path starting in that test reaches a function in the imported module. Indirect calls count.                                                                                        |
@@ -103,14 +103,12 @@ The repository includes a [golden report containing all eight findings](tests/fi
 Slopgraph combines two views of the same TypeScript program:
 
 ```text
-                         ┌─ imports, exports, entry points ─┐
-tsconfig.json ── files ──┤                                  ├── findings with evidence paths
-                         └─ TypeScript-resolved call edges ─┘
+                          ┌─ module graph: imports, exports, entry points ─┐
+tsconfig.json ──► files ──┤                                               ├──► findings
+                          └─ call graph: TypeScript-resolved call edges ──┘
 ```
 
-The module graph comes from parsed imports and exports. The call graph comes from the native TypeScript compiler's resolved signatures.
-
-That distinction matters. Slopgraph does not connect a call to every function with the same name. For a call such as `save()`, it asks TypeScript which declaration that particular call resolved to. If the declaration is external, unsupported, or cannot be mapped back to a function in the current program, Slopgraph leaves the edge out instead of guessing.
+The module graph comes from parsed imports and exports. The call graph comes from the native TypeScript compiler's resolved signatures, and that distinction matters: Slopgraph never connects a call to every function with the same name. For a call such as `save()`, it asks TypeScript which declaration the call resolved to. If that declaration is external, unsupported, or cannot be mapped back to a function in the current program, the edge is left out rather than guessed.
 
 ## Where reachability starts
 
