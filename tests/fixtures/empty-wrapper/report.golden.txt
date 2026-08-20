@@ -11,10 +11,24 @@ persistOrder  ←── finding
      ▼
 saveOrder
 
+TRAMP DATA
+subject: order  (line 5)
+persistOrder  ←── finding
+     │  passes order
+     ▼
+saveOrder
+
 EMPTY WRAPPER
 subject: asPersist  (line 9)
 asPersist  ←── finding
      │  return only
+     ▼
+saveOrder
+
+TRAMP DATA
+subject: order  (line 9)
+asPersist  ←── finding
+     │  passes order
      ▼
 saveOrder
 
@@ -25,9 +39,30 @@ fireAndForget  ←── finding
      ▼
 saveOrder
 
+TRAMP DATA
+subject: order  (line 13)
+fireAndForget  ←── finding
+     │  passes order
+     ▼
+saveOrder
+
 EMPTY WRAPPER
 subject: exportedWrap  (line 17)
 exportedWrap  ←── finding
      │  return only
+     ▼
+saveOrder
+
+TRAMP DATA
+subject: order  (line 17)
+exportedWrap  ←── finding
+     │  passes order
+     ▼
+saveOrder
+
+TRAMP DATA
+subject: order  (line 25)
+notAWrapper  ←── finding
+     │  passes order
      ▼
 saveOrder

@@ -1,0 +1,75 @@
+src/tramp.ts
+
+UNREACHABLE
+subject: src/tramp.ts  (line 1)
+src/tramp.ts  ←── finding
+
+EMPTY WRAPPER
+subject: forwardSimple  (line 3)
+forwardSimple  ←── finding
+     │
+     ▼
+sink
+
+TRAMP DATA
+subject: data  (line 3)
+forwardSimple  ←── finding
+     │  passes data
+     ▼
+sink
+
+EMPTY WRAPPER
+subject: forwardWithAssert  (line 7)
+forwardWithAssert  ←── finding
+     │
+     ▼
+sink
+
+TRAMP DATA
+subject: info  (line 7)
+forwardWithAssert  ←── finding
+     │  passes info
+     ▼
+sink
+
+EMPTY WRAPPER
+subject: multiHopA  (line 11)
+multiHopA  ←── finding
+     │
+     ▼
+multiHopB
+
+TRAMP DATA
+subject: item  (line 11)
+multiHopA  ←── finding
+     │  passes item
+     ▼
+multiHopB
+
+EMPTY WRAPPER
+subject: multiHopB  (line 15)
+multiHopB  ←── finding
+     │
+     ▼
+sink
+
+TRAMP DATA
+subject: item  (line 15)
+multiHopB  ←── finding
+     │  passes item
+     ▼
+sink
+
+EMPTY WRAPPER
+subject: unusedParam  (line 34)
+unusedParam  ←── finding
+     │
+     ▼
+sink
+
+EMPTY WRAPPER
+subject: operatorRead  (line 38)
+operatorRead  ←── finding
+     │
+     ▼
+sink

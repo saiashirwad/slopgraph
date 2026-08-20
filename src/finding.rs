@@ -7,6 +7,8 @@ pub enum Shape {
     FalseSharing,
     NearDuplicate,
     SingleUseChain,
+    TrampData,
+    TypeClone,
     Unreachable,
 }
 
@@ -17,6 +19,8 @@ impl Shape {
             Shape::FalseSharing => "FALSE SHARING",
             Shape::NearDuplicate => "NEAR-DUPLICATE",
             Shape::SingleUseChain => "SINGLE-USE CHAIN",
+            Shape::TrampData => "TRAMP DATA",
+            Shape::TypeClone => "TYPE CLONE",
             Shape::Unreachable => "UNREACHABLE",
         }
     }

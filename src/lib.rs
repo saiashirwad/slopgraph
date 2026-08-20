@@ -11,7 +11,9 @@ mod parse;
 mod program;
 mod report;
 mod single_use_chain;
+mod tramp_data;
 mod tsgo;
+mod type_clone;
 mod unreachable;
 
 pub use call_graph::{build as build_call_graph, CallGraph, FnNode, TypedEdge};

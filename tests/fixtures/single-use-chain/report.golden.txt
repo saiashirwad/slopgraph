@@ -4,6 +4,13 @@ UNREACHABLE
 subject: src/chain_forwarder.ts  (line 1)
 src/chain_forwarder.ts  ←── finding
 
+TRAMP DATA
+subject: value  (line 1)
+startPipeline  ←── finding
+     │  passes value
+     ▼
+forwardStep
+
 SINGLE-USE CHAIN
 subject: forwardStep  (line 5)
 startPipeline   (exported, not in chain)
@@ -11,6 +18,13 @@ startPipeline   (exported, not in chain)
      ▼
 forwardStep  ←── finding
      │
+     ▼
+computeStep
+
+TRAMP DATA
+subject: value  (line 5)
+forwardStep  ←── finding
+     │  passes value
      ▼
 computeStep
 
@@ -27,10 +41,24 @@ entryRoot  ←── finding
      ▼
 exportedMiddle
 
+TRAMP DATA
+subject: x  (line 1)
+entryRoot  ←── finding
+     │  passes x
+     ▼
+exportedMiddle
+
 EMPTY WRAPPER
 subject: exportedMiddle  (line 5)
 exportedMiddle  ←── finding
      │  return only
+     ▼
+finalLeaf
+
+TRAMP DATA
+subject: x  (line 5)
+exportedMiddle  ←── finding
+     │  passes x
      ▼
 finalLeaf
 
@@ -39,6 +67,13 @@ src/orders.ts
 UNREACHABLE
 subject: src/orders.ts  (line 1)
 src/orders.ts  ←── finding
+
+TRAMP DATA
+subject: order  (line 5)
+handleOrder  ←── finding
+     │  passes order
+     ▼
+prepareOrder
 
 SINGLE-USE CHAIN
 subject: prepareOrder  (line 9)
@@ -53,10 +88,31 @@ validateAndSave
      ▼
 dbSave
 
+TRAMP DATA
+subject: order  (line 9)
+prepareOrder  ←── finding
+     │  passes order
+     ▼
+validateAndSave
+
+TRAMP DATA
+subject: order  (line 13)
+validateAndSave  ←── finding
+     │  passes order
+     ▼
+dbSave
+
 EMPTY WRAPPER
 subject: persistOrder  (line 21)
 persistOrder  ←── finding
      │
+     ▼
+saveOrder
+
+TRAMP DATA
+subject: order  (line 21)
+persistOrder  ←── finding
+     │  passes order
      ▼
 saveOrder
 
@@ -72,6 +128,13 @@ helperWithTest
 UNREACHABLE
 subject: productionCaller  (line 1)
 productionCaller  ←── finding
+
+TRAMP DATA
+subject: x  (line 1)
+productionCaller  ←── finding
+     │  passes x
+     ▼
+helperWithTest
 
 FALSE SHARING
 subject: helperWithTest  (line 5)

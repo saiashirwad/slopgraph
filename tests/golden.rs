@@ -183,3 +183,14 @@ fn single_use_chain_test_callers_prevent_chain() {
 fn near_duplicate_functions() {
     assert_golden("near-duplicate");
 }
+
+#[test]
+fn tramp_data_parameters() {
+    assert_golden("tramp-data");
+}
+
+#[test]
+fn type_clone_interfaces_and_type_aliases() {
+    assert_golden("type-clone");
+}
+

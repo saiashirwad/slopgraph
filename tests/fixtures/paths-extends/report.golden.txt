@@ -11,6 +11,13 @@ pay  ←── finding
      ▼
 formatMoney
 
+TRAMP DATA
+subject: n  (line 3)
+pay  ←── finding
+     │  passes n
+     ▼
+formatMoney
+
 src/lib/money.ts
 
 UNREACHABLE

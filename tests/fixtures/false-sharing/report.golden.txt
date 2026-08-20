@@ -43,6 +43,13 @@ src/orders/list.ts
      ▼
 createOrder  ←── finding
 
+TRAMP DATA
+subject: n  (line 4)
+createOrder  ←── finding
+     │  passes n
+     ▼
+formatPrice
+
 src/orders/list.ts
 
 UNREACHABLE

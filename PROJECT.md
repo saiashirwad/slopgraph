@@ -26,7 +26,7 @@
 | 1 | M1: Unreachable Functions | `src/unreachable.rs`, `src/detect.rs`, tests, close #16 | none | DONE |
 | 2 | M2: Single-Use Chain | `src/single_use_chain.rs`, `src/lib.rs`, `src/main.rs`, `src/empty_wrapper.rs`, `src/detect.rs`, tests, close #17 | none | DONE |
 | 3 | M3: Near-Duplicate | `src/near_duplicate.rs`, `src/detect.rs`, `src/finding.rs`, tests, close #18 | none | DONE |
-| 4 | M4: Tramp Data | `src/tramp_data.rs`, `src/detect.rs`, `src/finding.rs`, tests, close #19 | none | PLANNED |
+| 4 | M4: Tramp Data | `src/tramp_data.rs`, `src/detect.rs`, `src/finding.rs`, tests, close #19 | none | DONE |
 | 5 | M5: Type Clone | `src/type_clone.rs`, `src/detect.rs`, `src/finding.rs`, tests, close #20 | none | PLANNED |
 | 6 | M6: Unreaching Test | `src/unreaching_test.rs`, `src/detect.rs`, `src/finding.rs`, tests, close #21 | none | PLANNED |
 | 7 | M7: Full-Report Conformance | CLI flags, `README.md`, full golden tests, close #22 & #1 | M1-M6 | PLANNED |

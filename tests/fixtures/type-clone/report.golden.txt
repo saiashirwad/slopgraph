@@ -1,0 +1,46 @@
+src/cross_file.ts
+
+UNREACHABLE
+subject: src/cross_file.ts  (line 1)
+src/cross_file.ts  ←── finding
+
+TYPE CLONE
+subject: ServiceConfig  (line 1)
+ServiceConfig  ←── finding
+     │
+     ▼
+ServerSettings
+
+src/same_file.ts
+
+UNREACHABLE
+subject: src/same_file.ts  (line 1)
+src/same_file.ts  ←── finding
+
+TYPE CLONE
+subject: UserDTO  (line 2)
+UserDTO  ←── finding
+     │
+     ▼
+UserRecord
+
+TYPE CLONE
+subject: OrderInfo  (line 15)
+OrderInfo  ←── finding
+     │
+     ▼
+OrderPayload
+
+TYPE CLONE
+subject: ItemData  (line 28)
+ItemData  ←── finding
+     │
+     ▼
+ProductEntry
+
+TYPE CLONE
+subject: Point3DA  (line 41)
+Point3DA  ←── finding
+     │
+     ▼
+Point3DB
