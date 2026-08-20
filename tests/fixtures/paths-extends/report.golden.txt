@@ -2,10 +2,12 @@ src/checkout/pay.ts
 
 UNREACHABLE
 subject: src/checkout/pay.ts  (line 1)
+File 'src/checkout/pay.ts' is not reachable from any entry point.
 src/checkout/pay.ts  ←── finding
 
 EMPTY WRAPPER
 subject: pay  (line 3)
+Function 'pay' only forwards calls to 'formatMoney'.
 pay  ←── finding
      │  return only
      ▼
@@ -13,6 +15,7 @@ formatMoney
 
 TRAMP DATA
 subject: n  (line 3)
+Parameter 'n' in 'pay' is forwarded to 'formatMoney' without local use.
 pay  ←── finding
      │  passes n
      ▼
@@ -22,10 +25,12 @@ src/lib/money.ts
 
 UNREACHABLE
 subject: src/lib/money.ts  (line 1)
+File 'src/lib/money.ts' is not reachable from any entry point.
 src/lib/money.ts  ←── finding
 
 FALSE SHARING
 subject: formatMoney  (line 1)
+Export 'formatMoney' is imported only within a single consumer group.
 src/checkout/pay.ts
      │  one consumer group
      ▼

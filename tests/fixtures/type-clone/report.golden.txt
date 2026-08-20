@@ -2,10 +2,12 @@ src/cross_file.ts
 
 UNREACHABLE
 subject: src/cross_file.ts  (line 1)
+File 'src/cross_file.ts' is not reachable from any entry point.
 src/cross_file.ts  ←── finding
 
 TYPE CLONE
 subject: ServiceConfig  (line 1)
+Type 'ServiceConfig' has identical fields and types to 'ServerSettings' without inheritance.
 ServiceConfig  ←── finding
      │
      ▼
@@ -15,10 +17,12 @@ src/same_file.ts
 
 UNREACHABLE
 subject: src/same_file.ts  (line 1)
+File 'src/same_file.ts' is not reachable from any entry point.
 src/same_file.ts  ←── finding
 
 TYPE CLONE
 subject: UserDTO  (line 2)
+Type 'UserDTO' has identical fields and types to 'UserRecord' without inheritance.
 UserDTO  ←── finding
      │
      ▼
@@ -26,6 +30,7 @@ UserRecord
 
 TYPE CLONE
 subject: OrderInfo  (line 15)
+Type 'OrderInfo' has identical fields and types to 'OrderPayload' without inheritance.
 OrderInfo  ←── finding
      │
      ▼
@@ -33,6 +38,7 @@ OrderPayload
 
 TYPE CLONE
 subject: ItemData  (line 28)
+Type 'ItemData' has identical fields and types to 'ProductEntry' without inheritance.
 ItemData  ←── finding
      │
      ▼
@@ -40,6 +46,7 @@ ProductEntry
 
 TYPE CLONE
 subject: Point3DA  (line 41)
+Type 'Point3DA' has identical fields and types to 'Point3DB' without inheritance.
 Point3DA  ←── finding
      │
      ▼

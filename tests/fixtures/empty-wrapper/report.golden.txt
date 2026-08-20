@@ -2,10 +2,12 @@ src/wrap.ts
 
 UNREACHABLE
 subject: src/wrap.ts  (line 1)
+File 'src/wrap.ts' is not reachable from any entry point.
 src/wrap.ts  ←── finding
 
 EMPTY WRAPPER
 subject: persistOrder  (line 5)
+Function 'persistOrder' only forwards calls to 'saveOrder'.
 persistOrder  ←── finding
      │  return only
      ▼
@@ -13,6 +15,7 @@ saveOrder
 
 TRAMP DATA
 subject: order  (line 5)
+Parameter 'order' in 'persistOrder' is forwarded to 'saveOrder' without local use.
 persistOrder  ←── finding
      │  passes order
      ▼
@@ -20,6 +23,7 @@ saveOrder
 
 EMPTY WRAPPER
 subject: asPersist  (line 9)
+Function 'asPersist' only forwards calls to 'saveOrder'.
 asPersist  ←── finding
      │  return only
      ▼
@@ -27,6 +31,7 @@ saveOrder
 
 TRAMP DATA
 subject: order  (line 9)
+Parameter 'order' in 'asPersist' is forwarded to 'saveOrder' without local use.
 asPersist  ←── finding
      │  passes order
      ▼
@@ -34,6 +39,7 @@ saveOrder
 
 EMPTY WRAPPER
 subject: fireAndForget  (line 13)
+Function 'fireAndForget' only forwards calls to 'saveOrder'.
 fireAndForget  ←── finding
      │
      ▼
@@ -41,6 +47,7 @@ saveOrder
 
 TRAMP DATA
 subject: order  (line 13)
+Parameter 'order' in 'fireAndForget' is forwarded to 'saveOrder' without local use.
 fireAndForget  ←── finding
      │  passes order
      ▼
@@ -48,6 +55,7 @@ saveOrder
 
 EMPTY WRAPPER
 subject: exportedWrap  (line 17)
+Function 'exportedWrap' only forwards calls to 'saveOrder'.
 exportedWrap  ←── finding
      │  return only
      ▼
@@ -55,6 +63,7 @@ saveOrder
 
 TRAMP DATA
 subject: order  (line 17)
+Parameter 'order' in 'exportedWrap' is forwarded to 'saveOrder' without local use.
 exportedWrap  ←── finding
      │  passes order
      ▼
@@ -62,6 +71,7 @@ saveOrder
 
 TRAMP DATA
 subject: order  (line 25)
+Parameter 'order' in 'notAWrapper' is forwarded to 'saveOrder' without local use.
 notAWrapper  ←── finding
      │  passes order
      ▼

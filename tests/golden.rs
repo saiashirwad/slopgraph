@@ -80,32 +80,38 @@ src/index.ts
 
 UNREACHABLE
 subject: unusedIndexFn  (line 3)
+Function 'unusedIndexFn' is not reachable from any entry point.
 unusedIndexFn  ←── finding
 
 src/orphan.ts
 
 UNREACHABLE
 subject: src/orphan.ts  (line 1)
+File 'src/orphan.ts' is not reachable from any entry point.
 src/orphan.ts  ←── finding
 
 src/test_only.ts
 
 UNREACHABLE
 subject: src/test_only.ts  (line 1)
+File 'src/test_only.ts' is not reachable from any entry point.
 src/test_only.ts  ←── finding
 
 src/used.ts
 
 UNREACHABLE
 subject: deadHelper  (line 5)
+Function 'deadHelper' is not reachable from any entry point.
 deadHelper  ←── finding
 
 UNREACHABLE
 subject: deadInternal  (line 9)
+Function 'deadInternal' is not reachable from any entry point.
 deadInternal  ←── finding
 
 EMPTY WRAPPER
 subject: deadChainA  (line 11)
+Function 'deadChainA' only forwards calls to 'deadChainB'.
 deadChainA  ←── finding
      │
      ▼
@@ -113,14 +119,17 @@ deadChainB
 
 UNREACHABLE
 subject: deadChainA  (line 11)
+Function 'deadChainA' is not reachable from any entry point.
 deadChainA  ←── finding
 
 UNREACHABLE
 subject: deadChainB  (line 15)
+Function 'deadChainB' is not reachable from any entry point.
 deadChainB  ←── finding
 
 FALSE SHARING
 subject: testOnlyHelper  (line 17)
+Export 'testOnlyHelper' is imported only within a single consumer group.
 tests/a.test.ts
      │  one consumer group
      ▼
@@ -128,10 +137,12 @@ testOnlyHelper  ←── finding
 
 UNREACHABLE
 subject: testOnlyHelper  (line 17)
+Function 'testOnlyHelper' is not reachable from any entry point.
 testOnlyHelper  ←── finding
 ";
     assert_eq!(report, expected);
 }
+
 
 #[test]
 fn test_files_remain_in_graph_under_production() {

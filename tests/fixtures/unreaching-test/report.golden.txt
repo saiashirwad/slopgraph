@@ -2,6 +2,7 @@ src/multi_reached.ts
 
 FALSE SHARING
 subject: formatGreeting  (line 1)
+Export 'formatGreeting' is imported only within a single consumer group.
 tests/multi.test.ts
      │  one consumer group
      ▼
@@ -11,6 +12,7 @@ src/multi_unreached.ts
 
 FALSE SHARING
 subject: unusedFeature  (line 1)
+Export 'unusedFeature' is imported only within a single consumer group.
 tests/multi.test.ts
      │  one consumer group
      ▼
@@ -18,12 +20,14 @@ unusedFeature  ←── finding
 
 UNREACHABLE
 subject: unusedFeature  (line 1)
+Function 'unusedFeature' is not reachable from any entry point.
 unusedFeature  ←── finding
 
 src/reached.ts
 
 FALSE SHARING
 subject: calculateTotal  (line 1)
+Export 'calculateTotal' is imported only within a single consumer group.
 tests/reached.test.ts
      │  one consumer group
      ▼
@@ -33,6 +37,7 @@ src/repo.ts
 
 FALSE SHARING
 subject: queryData  (line 1)
+Export 'queryData' is imported only within a single consumer group.
 src/service.ts
      │  one consumer group
      ▼
@@ -42,6 +47,7 @@ src/service.ts
 
 FALSE SHARING
 subject: serviceAction  (line 3)
+Export 'serviceAction' is imported only within a single consumer group.
 src/index.ts
      │  one consumer group
      ▼
@@ -51,6 +57,7 @@ src/unreached.ts
 
 FALSE SHARING
 subject: unreachedProductionFn  (line 1)
+Export 'unreachedProductionFn' is imported only within a single consumer group.
 tests/unreached.test.ts
      │  one consumer group
      ▼
@@ -58,12 +65,14 @@ unreachedProductionFn  ←── finding
 
 UNREACHABLE
 subject: unreachedProductionFn  (line 1)
+Function 'unreachedProductionFn' is not reachable from any entry point.
 unreachedProductionFn  ←── finding
 
 tests/helper.ts
 
 FALSE SHARING
 subject: setupTestEnvironment  (line 1)
+Export 'setupTestEnvironment' is imported only within a single consumer group.
 tests/unreached.test.ts
      │  one consumer group
      ▼
@@ -73,6 +82,7 @@ tests/multi.test.ts
 
 UNREACHING TEST
 subject: src/multi_unreached.ts  (line 2)
+Test 'tests/multi.test.ts' imports 'src/multi_unreached.ts' but makes zero typed calls to it.
 tests/multi.test.ts
      │
      ▼
@@ -82,6 +92,7 @@ tests/unreached.test.ts
 
 UNREACHING TEST
 subject: src/unreached.ts  (line 1)
+Test 'tests/unreached.test.ts' imports 'src/unreached.ts' but makes zero typed calls to it.
 tests/unreached.test.ts
      │
      ▼

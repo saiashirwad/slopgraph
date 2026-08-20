@@ -2,10 +2,12 @@ src/tramp.ts
 
 UNREACHABLE
 subject: src/tramp.ts  (line 1)
+File 'src/tramp.ts' is not reachable from any entry point.
 src/tramp.ts  ←── finding
 
 EMPTY WRAPPER
 subject: forwardSimple  (line 3)
+Function 'forwardSimple' only forwards calls to 'sink'.
 forwardSimple  ←── finding
      │
      ▼
@@ -13,6 +15,7 @@ sink
 
 TRAMP DATA
 subject: data  (line 3)
+Parameter 'data' in 'forwardSimple' is forwarded to 'sink' without local use.
 forwardSimple  ←── finding
      │  passes data
      ▼
@@ -20,6 +23,7 @@ sink
 
 EMPTY WRAPPER
 subject: forwardWithAssert  (line 7)
+Function 'forwardWithAssert' only forwards calls to 'sink'.
 forwardWithAssert  ←── finding
      │
      ▼
@@ -27,6 +31,7 @@ sink
 
 TRAMP DATA
 subject: info  (line 7)
+Parameter 'info' in 'forwardWithAssert' is forwarded to 'sink' without local use.
 forwardWithAssert  ←── finding
      │  passes info
      ▼
@@ -34,6 +39,7 @@ sink
 
 EMPTY WRAPPER
 subject: multiHopA  (line 11)
+Function 'multiHopA' only forwards calls to 'multiHopB'.
 multiHopA  ←── finding
      │
      ▼
@@ -41,6 +47,7 @@ multiHopB
 
 TRAMP DATA
 subject: item  (line 11)
+Parameter 'item' in 'multiHopA' is forwarded to 'multiHopB' without local use.
 multiHopA  ←── finding
      │  passes item
      ▼
@@ -48,6 +55,7 @@ multiHopB
 
 EMPTY WRAPPER
 subject: multiHopB  (line 15)
+Function 'multiHopB' only forwards calls to 'sink'.
 multiHopB  ←── finding
      │
      ▼
@@ -55,6 +63,7 @@ sink
 
 TRAMP DATA
 subject: item  (line 15)
+Parameter 'item' in 'multiHopB' is forwarded to 'sink' without local use.
 multiHopB  ←── finding
      │  passes item
      ▼
@@ -62,6 +71,7 @@ sink
 
 EMPTY WRAPPER
 subject: unusedParam  (line 34)
+Function 'unusedParam' only forwards calls to 'sink'.
 unusedParam  ←── finding
      │
      ▼
@@ -69,6 +79,7 @@ sink
 
 EMPTY WRAPPER
 subject: operatorRead  (line 38)
+Function 'operatorRead' only forwards calls to 'sink'.
 operatorRead  ←── finding
      │
      ▼

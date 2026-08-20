@@ -2,10 +2,12 @@ src/chain_forwarder.ts
 
 UNREACHABLE
 subject: src/chain_forwarder.ts  (line 1)
+File 'src/chain_forwarder.ts' is not reachable from any entry point.
 src/chain_forwarder.ts  ←── finding
 
 TRAMP DATA
 subject: value  (line 1)
+Parameter 'value' in 'startPipeline' is forwarded to 'forwardStep' without local use.
 startPipeline  ←── finding
      │  passes value
      ▼
@@ -13,6 +15,7 @@ forwardStep
 
 SINGLE-USE CHAIN
 subject: forwardStep  (line 5)
+Chain of 3 functions with exactly one caller per function.
 startPipeline   (exported, not in chain)
      │
      ▼
@@ -23,6 +26,7 @@ computeStep
 
 TRAMP DATA
 subject: value  (line 5)
+Parameter 'value' in 'forwardStep' is forwarded to 'computeStep' without local use.
 forwardStep  ←── finding
      │  passes value
      ▼
@@ -32,10 +36,12 @@ src/exported_chain.ts
 
 UNREACHABLE
 subject: src/exported_chain.ts  (line 1)
+File 'src/exported_chain.ts' is not reachable from any entry point.
 src/exported_chain.ts  ←── finding
 
 EMPTY WRAPPER
 subject: entryRoot  (line 1)
+Function 'entryRoot' only forwards calls to 'exportedMiddle'.
 entryRoot  ←── finding
      │  return only
      ▼
@@ -43,6 +49,7 @@ exportedMiddle
 
 TRAMP DATA
 subject: x  (line 1)
+Parameter 'x' in 'entryRoot' is forwarded to 'exportedMiddle' without local use.
 entryRoot  ←── finding
      │  passes x
      ▼
@@ -50,6 +57,7 @@ exportedMiddle
 
 EMPTY WRAPPER
 subject: exportedMiddle  (line 5)
+Function 'exportedMiddle' only forwards calls to 'finalLeaf'.
 exportedMiddle  ←── finding
      │  return only
      ▼
@@ -57,6 +65,7 @@ finalLeaf
 
 TRAMP DATA
 subject: x  (line 5)
+Parameter 'x' in 'exportedMiddle' is forwarded to 'finalLeaf' without local use.
 exportedMiddle  ←── finding
      │  passes x
      ▼
@@ -66,10 +75,12 @@ src/orders.ts
 
 UNREACHABLE
 subject: src/orders.ts  (line 1)
+File 'src/orders.ts' is not reachable from any entry point.
 src/orders.ts  ←── finding
 
 TRAMP DATA
 subject: order  (line 5)
+Parameter 'order' in 'handleOrder' is forwarded to 'prepareOrder' without local use.
 handleOrder  ←── finding
      │  passes order
      ▼
@@ -77,6 +88,7 @@ prepareOrder
 
 SINGLE-USE CHAIN
 subject: prepareOrder  (line 9)
+Chain of 4 functions with exactly one caller per function.
 handleOrder   (exported, not in chain)
      │
      ▼
@@ -90,6 +102,7 @@ dbSave
 
 TRAMP DATA
 subject: order  (line 9)
+Parameter 'order' in 'prepareOrder' is forwarded to 'validateAndSave' without local use.
 prepareOrder  ←── finding
      │  passes order
      ▼
@@ -97,6 +110,7 @@ validateAndSave
 
 TRAMP DATA
 subject: order  (line 13)
+Parameter 'order' in 'validateAndSave' is forwarded to 'dbSave' without local use.
 validateAndSave  ←── finding
      │  passes order
      ▼
@@ -104,6 +118,7 @@ dbSave
 
 EMPTY WRAPPER
 subject: persistOrder  (line 21)
+Function 'persistOrder' only forwards calls to 'saveOrder'.
 persistOrder  ←── finding
      │
      ▼
@@ -111,6 +126,7 @@ saveOrder
 
 TRAMP DATA
 subject: order  (line 21)
+Parameter 'order' in 'persistOrder' is forwarded to 'saveOrder' without local use.
 persistOrder  ←── finding
      │  passes order
      ▼
@@ -120,6 +136,7 @@ src/test_caller.ts
 
 EMPTY WRAPPER
 subject: productionCaller  (line 1)
+Function 'productionCaller' only forwards calls to 'helperWithTest'.
 productionCaller  ←── finding
      │  return only
      ▼
@@ -127,10 +144,12 @@ helperWithTest
 
 UNREACHABLE
 subject: productionCaller  (line 1)
+Function 'productionCaller' is not reachable from any entry point.
 productionCaller  ←── finding
 
 TRAMP DATA
 subject: x  (line 1)
+Parameter 'x' in 'productionCaller' is forwarded to 'helperWithTest' without local use.
 productionCaller  ←── finding
      │  passes x
      ▼
@@ -138,6 +157,7 @@ helperWithTest
 
 FALSE SHARING
 subject: helperWithTest  (line 5)
+Export 'helperWithTest' is imported only within a single consumer group.
 tests/check.test.ts
      │  one consumer group
      ▼
@@ -147,6 +167,7 @@ tests/check.test.ts
 
 EMPTY WRAPPER
 subject: testHelper  (line 3)
+Function 'testHelper' only forwards calls to 'helperWithTest'.
 testHelper  ←── finding
      │
      ▼

@@ -2,12 +2,14 @@ src/dead.ts
 
 UNREACHABLE
 subject: src/dead.ts  (line 1)
+File 'src/dead.ts' is not reachable from any entry point.
 src/dead.ts  ←── finding
 
 src/duplicates.ts
 
 FALSE SHARING
 subject: processCustomerData  (line 1)
+Export 'processCustomerData' is imported only within a single consumer group.
 src/index.ts
      │  one consumer group
      ▼
@@ -15,6 +17,7 @@ processCustomerData  ←── finding
 
 NEAR-DUPLICATE
 subject: processCustomerData  (line 1)
+Function 'processCustomerData' has nearly identical implementation to 'processSupplierData'.
 processCustomerData  ←── finding
      │
      ▼
@@ -22,6 +25,7 @@ processSupplierData
 
 FALSE SHARING
 subject: processSupplierData  (line 17)
+Export 'processSupplierData' is imported only within a single consumer group.
 src/index.ts
      │  one consumer group
      ▼
@@ -31,6 +35,7 @@ src/pipeline.ts
 
 SINGLE-USE CHAIN
 subject: stepOne  (line 9)
+Chain of 4 functions with exactly one caller per function.
 runPipeline   (exported, not in chain)
      │
      ▼
@@ -44,6 +49,7 @@ stepThree
 
 FALSE SHARING
 subject: runPipeline  (line 13)
+Export 'runPipeline' is imported only within a single consumer group.
 src/index.ts
      │  one consumer group
      ▼
@@ -53,6 +59,7 @@ src/service.ts
 
 FALSE SHARING
 subject: sharedService  (line 1)
+Export 'sharedService' is imported only within a single consumer group.
 src/index.ts
      │  one consumer group
      ▼
@@ -60,6 +67,7 @@ sharedService  ←── finding
 
 FALSE SHARING
 subject: testOnlyService  (line 5)
+Export 'testOnlyService' is imported only within a single consumer group.
 tests/full.test.ts
      │  one consumer group
      ▼
@@ -67,12 +75,14 @@ testOnlyService  ←── finding
 
 UNREACHABLE
 subject: deadServiceHelper  (line 9)
+Function 'deadServiceHelper' is not reachable from any entry point.
 deadServiceHelper  ←── finding
 
 src/tramp.ts
 
 FALSE SHARING
 subject: forwardData  (line 5)
+Export 'forwardData' is imported only within a single consumer group.
 src/index.ts
      │  one consumer group
      ▼
@@ -80,6 +90,7 @@ forwardData  ←── finding
 
 TRAMP DATA
 subject: payload  (line 5)
+Parameter 'payload' in 'forwardData' is forwarded to 'sink' without local use.
 forwardData  ←── finding
      │  passes payload
      ▼
@@ -89,6 +100,7 @@ src/types.ts
 
 FALSE SHARING
 subject: UserProfile  (line 1)
+Export 'UserProfile' is imported only within a single consumer group.
 src/index.ts
      │  one consumer group
      ▼
@@ -96,6 +108,7 @@ UserProfile  ←── finding
 
 TYPE CLONE
 subject: UserProfile  (line 1)
+Type 'UserProfile' has identical fields and types to 'AccountRecord' without inheritance.
 UserProfile  ←── finding
      │
      ▼
@@ -103,6 +116,7 @@ AccountRecord
 
 FALSE SHARING
 subject: AccountRecord  (line 7)
+Export 'AccountRecord' is imported only within a single consumer group.
 src/index.ts
      │  one consumer group
      ▼
@@ -112,6 +126,7 @@ src/unreached_prod.ts
 
 FALSE SHARING
 subject: unreachedProductionFn  (line 1)
+Export 'unreachedProductionFn' is imported only within a single consumer group.
 tests/unreaching.test.ts
      │  one consumer group
      ▼
@@ -119,12 +134,14 @@ unreachedProductionFn  ←── finding
 
 UNREACHABLE
 subject: unreachedProductionFn  (line 1)
+Function 'unreachedProductionFn' is not reachable from any entry point.
 unreachedProductionFn  ←── finding
 
 src/wrapper.ts
 
 EMPTY WRAPPER
 subject: emptyWrapper  (line 5)
+Function 'emptyWrapper' only forwards calls to 'targetAction'.
 emptyWrapper  ←── finding
      │  return only
      ▼
@@ -132,6 +149,7 @@ targetAction
 
 FALSE SHARING
 subject: wrapFirst  (line 9)
+Export 'wrapFirst' is imported only within a single consumer group.
 src/index.ts
      │  one consumer group
      ▼
@@ -139,6 +157,7 @@ wrapFirst  ←── finding
 
 FALSE SHARING
 subject: wrapSecond  (line 14)
+Export 'wrapSecond' is imported only within a single consumer group.
 src/index.ts
      │  one consumer group
      ▼
@@ -148,6 +167,7 @@ tests/unreaching.test.ts
 
 UNREACHING TEST
 subject: src/unreached_prod.ts  (line 1)
+Test 'tests/unreaching.test.ts' imports 'src/unreached_prod.ts' but makes zero typed calls to it.
 tests/unreaching.test.ts
      │
      ▼

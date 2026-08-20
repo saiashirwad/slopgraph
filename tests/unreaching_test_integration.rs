@@ -17,14 +17,15 @@ fn test_unreaching_test_detector_end_to_end_on_fixture() {
 
     // Verify tests/unreached.test.ts reports src/unreached.ts
     assert!(
-        report.contains("tests/unreached.test.ts\n\nUNREACHING TEST\nsubject: src/unreached.ts  (line 1)\ntests/unreached.test.ts\n     │\n     ▼\nsrc/unreached.ts  ←── finding")
+        report.contains("tests/unreached.test.ts\n\nUNREACHING TEST\nsubject: src/unreached.ts  (line 1)\nTest 'tests/unreached.test.ts' imports 'src/unreached.ts' but makes zero typed calls to it.\ntests/unreached.test.ts\n     │\n     ▼\nsrc/unreached.ts  ←── finding")
     );
 
     // Verify tests/multi.test.ts reports src/multi_unreached.ts
     assert!(
-        report.contains("tests/multi.test.ts\n\nUNREACHING TEST\nsubject: src/multi_unreached.ts  (line 2)\ntests/multi.test.ts\n     │\n     ▼\nsrc/multi_unreached.ts  ←── finding")
+        report.contains("tests/multi.test.ts\n\nUNREACHING TEST\nsubject: src/multi_unreached.ts  (line 2)\nTest 'tests/multi.test.ts' imports 'src/multi_unreached.ts' but makes zero typed calls to it.\ntests/multi.test.ts\n     │\n     ▼\nsrc/multi_unreached.ts  ←── finding")
     );
 }
+
 
 #[test]
 fn test_unreaching_test_detector_does_not_flag_reached_modules() {

@@ -2,10 +2,12 @@ src/app.ts
 
 UNREACHABLE
 subject: src/app.ts  (line 1)
+File 'src/app.ts' is not reachable from any entry point.
 src/app.ts  ←── finding
 
 FALSE SHARING
 subject: app  (line 3)
+Export 'app' is imported only within a single consumer group.
 src/other.ts
      │  one consumer group
      ▼
@@ -15,10 +17,12 @@ src/other.ts
 
 UNREACHABLE
 subject: src/other.ts  (line 1)
+File 'src/other.ts' is not reachable from any entry point.
 src/other.ts  ←── finding
 
 EMPTY WRAPPER
 subject: other  (line 3)
+Function 'other' only forwards calls to 'app'.
 other  ←── finding
      │  return only
      ▼

@@ -59,8 +59,13 @@ fn find_type_clone_pairs(report: &str) -> Vec<(String, String)> {
                 let rest = lines[i + 1].strip_prefix("subject: ").unwrap();
                 subject = rest.split("  (").next().unwrap_or(rest).trim().to_string();
             }
-            if i + 5 < lines.len() {
-                target = lines[i + 5].trim().to_string();
+            let mut j = i + 2;
+            while j < lines.len() && !lines[j].trim().is_empty() {
+                if lines[j].trim() == "▼" && j + 1 < lines.len() {
+                    target = lines[j + 1].trim().to_string();
+                    break;
+                }
+                j += 1;
             }
             if !subject.is_empty() && !target.is_empty() {
                 pairs.push((subject, target));
@@ -70,6 +75,7 @@ fn find_type_clone_pairs(report: &str) -> Vec<(String, String)> {
     }
     pairs
 }
+
 
 #[test]
 fn test_multitype_three_way_clones_across_files() {

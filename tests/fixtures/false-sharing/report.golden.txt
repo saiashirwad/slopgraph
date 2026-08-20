@@ -2,10 +2,12 @@ src/catalog/item.ts
 
 UNREACHABLE
 subject: src/catalog/item.ts  (line 1)
+File 'src/catalog/item.ts' is not reachable from any entry point.
 src/catalog/item.ts  ←── finding
 
 EMPTY WRAPPER
 subject: item  (line 3)
+Function 'item' only forwards calls to 'nextId'.
 item  ←── finding
      │  return only
      ▼
@@ -15,10 +17,12 @@ src/lib/format.ts
 
 UNREACHABLE
 subject: src/lib/format.ts  (line 1)
+File 'src/lib/format.ts' is not reachable from any entry point.
 src/lib/format.ts  ←── finding
 
 FALSE SHARING
 subject: formatPrice  (line 1)
+Export 'formatPrice' is imported only within a single consumer group.
 src/orders/create.ts
      │  one consumer group
      ▼
@@ -28,16 +32,19 @@ src/lib/unused.ts
 
 UNREACHABLE
 subject: src/lib/unused.ts  (line 1)
+File 'src/lib/unused.ts' is not reachable from any entry point.
 src/lib/unused.ts  ←── finding
 
 src/orders/create.ts
 
 UNREACHABLE
 subject: src/orders/create.ts  (line 1)
+File 'src/orders/create.ts' is not reachable from any entry point.
 src/orders/create.ts  ←── finding
 
 FALSE SHARING
 subject: createOrder  (line 4)
+Export 'createOrder' is imported only within a single consumer group.
 src/orders/list.ts
      │  one consumer group
      ▼
@@ -45,6 +52,7 @@ createOrder  ←── finding
 
 TRAMP DATA
 subject: n  (line 4)
+Parameter 'n' in 'createOrder' is forwarded to 'formatPrice' without local use.
 createOrder  ←── finding
      │  passes n
      ▼
@@ -54,10 +62,12 @@ src/orders/list.ts
 
 UNREACHABLE
 subject: src/orders/list.ts  (line 1)
+File 'src/orders/list.ts' is not reachable from any entry point.
 src/orders/list.ts  ←── finding
 
 EMPTY WRAPPER
 subject: listOrders  (line 3)
+Function 'listOrders' only forwards calls to 'createOrder'.
 listOrders  ←── finding
      │  return only
      ▼
@@ -67,4 +77,5 @@ src/shared/id.ts
 
 UNREACHABLE
 subject: src/shared/id.ts  (line 1)
+File 'src/shared/id.ts' is not reachable from any entry point.
 src/shared/id.ts  ←── finding

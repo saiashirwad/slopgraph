@@ -55,13 +55,14 @@ slopgraph path/to/dir --production --include-exported
 
 ## Report
 
-Findings are grouped by file. Each one names the shape, the subject, the line, and an ASCII path you can check. If there is nothing to report, it prints nothing.
+Findings are grouped by file. Each finding names the shape, the subject, the line, an explanatory summary sentence, and an ASCII path you can check. If there is nothing to report, it prints nothing.
 
 ```text
 src/pipeline.ts
 
 SINGLE-USE CHAIN
 subject: stepOne  (line 9)
+Chain of 4 functions with exactly one caller per function.
 runPipeline   (exported, not in chain)
      │
      ▼
@@ -77,6 +78,7 @@ src/service.ts
 
 FALSE SHARING
 subject: sharedService  (line 1)
+Export 'sharedService' is imported only within a single consumer group.
 src/index.ts
      │  one consumer group
      ▼
@@ -86,8 +88,10 @@ src/wrapper.ts
 
 EMPTY WRAPPER
 subject: emptyWrapper  (line 5)
+Function 'emptyWrapper' only forwards calls to 'targetAction'.
 emptyWrapper  ←── finding
      │  return only
      ▼
 targetAction
 ```
+

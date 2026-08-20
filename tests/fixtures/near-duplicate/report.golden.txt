@@ -2,10 +2,12 @@ src/pairs.ts
 
 UNREACHABLE
 subject: src/pairs.ts  (line 1)
+File 'src/pairs.ts' is not reachable from any entry point.
 src/pairs.ts  ←── finding
 
 NEAR-DUPLICATE
 subject: processCustomerData  (line 1)
+Function 'processCustomerData' has nearly identical implementation to 'processSupplierData'.
 processCustomerData  ←── finding
      │
      ▼
