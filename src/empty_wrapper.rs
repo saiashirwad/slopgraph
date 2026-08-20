@@ -1,11 +1,22 @@
+use std::collections::HashSet;
+
 use crate::call_graph::CallGraph;
 use crate::finding::{Evidence, Finding, Location, PathNode, Shape};
 
 /// A function whose body is only a forward on a typed edge.
+#[allow(dead_code)]
 pub fn detect(graph: &CallGraph) -> Vec<Finding> {
+    detect_with_suppression(graph, &HashSet::new())
+}
+
+/// A function whose body is only a forward on a typed edge, suppressing specified function indices.
+pub fn detect_with_suppression(graph: &CallGraph, suppressed: &HashSet<usize>) -> Vec<Finding> {
     let mut findings = Vec::new();
 
     for (from, func) in graph.functions.iter().enumerate() {
+        if suppressed.contains(&from) {
+            continue;
+        }
         let Some(forward) = &func.forward else {
             continue;
         };

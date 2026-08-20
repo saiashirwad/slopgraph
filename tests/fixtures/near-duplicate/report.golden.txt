@@ -1,0 +1,12 @@
+src/pairs.ts
+
+UNREACHABLE
+subject: src/pairs.ts  (line 1)
+src/pairs.ts  ←── finding
+
+NEAR-DUPLICATE
+subject: processCustomerData  (line 1)
+processCustomerData  ←── finding
+     │
+     ▼
+processSupplierData

@@ -1,5 +1,43 @@
+src/index.ts
+
+UNREACHABLE
+subject: unusedIndexFn  (line 3)
+unusedIndexFn  ←── finding
+
 src/orphan.ts
 
 UNREACHABLE
 subject: src/orphan.ts  (line 1)
 src/orphan.ts  ←── finding
+
+src/used.ts
+
+UNREACHABLE
+subject: deadHelper  (line 5)
+deadHelper  ←── finding
+
+UNREACHABLE
+subject: deadInternal  (line 9)
+deadInternal  ←── finding
+
+EMPTY WRAPPER
+subject: deadChainA  (line 11)
+deadChainA  ←── finding
+     │
+     ▼
+deadChainB
+
+UNREACHABLE
+subject: deadChainA  (line 11)
+deadChainA  ←── finding
+
+UNREACHABLE
+subject: deadChainB  (line 15)
+deadChainB  ←── finding
+
+FALSE SHARING
+subject: testOnlyHelper  (line 17)
+tests/a.test.ts
+     │  one consumer group
+     ▼
+testOnlyHelper  ←── finding

@@ -1,0 +1,4 @@
+{
+  "name": "unreachable-stress-fixture",
+  "main": "./src/entry.ts"
+}

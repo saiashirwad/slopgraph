@@ -245,34 +245,77 @@ pub fn display_path(root: &Path, file: &Path) -> PathBuf {
 
 #[cfg(test)]
 mod tests {
-    use std::path::Path;
     use super::*;
+    use std::path::Path;
 
     #[test]
     fn test_file_predicate_identifies_tests() {
         let root = Path::new("/workspace/project");
 
         // Name-based test files
-        assert!(is_test_file(root, Path::new("/workspace/project/src/app.test.ts")));
-        assert!(is_test_file(root, Path::new("/workspace/project/src/app.spec.ts")));
-        assert!(is_test_file(root, Path::new("/workspace/project/src/app.test.tsx")));
-        assert!(is_test_file(root, Path::new("/workspace/project/src/app.spec.tsx")));
-        assert!(is_test_file(root, Path::new("/workspace/project/src/app.test.mts")));
-        assert!(is_test_file(root, Path::new("/workspace/project/src/app.test.cts")));
-        assert!(is_test_file(root, Path::new("/workspace/project/src/test.ts")));
-        assert!(is_test_file(root, Path::new("/workspace/project/src/spec.ts")));
+        assert!(is_test_file(
+            root,
+            Path::new("/workspace/project/src/app.test.ts")
+        ));
+        assert!(is_test_file(
+            root,
+            Path::new("/workspace/project/src/app.spec.ts")
+        ));
+        assert!(is_test_file(
+            root,
+            Path::new("/workspace/project/src/app.test.tsx")
+        ));
+        assert!(is_test_file(
+            root,
+            Path::new("/workspace/project/src/app.spec.tsx")
+        ));
+        assert!(is_test_file(
+            root,
+            Path::new("/workspace/project/src/app.test.mts")
+        ));
+        assert!(is_test_file(
+            root,
+            Path::new("/workspace/project/src/app.test.cts")
+        ));
+        assert!(is_test_file(
+            root,
+            Path::new("/workspace/project/src/test.ts")
+        ));
+        assert!(is_test_file(
+            root,
+            Path::new("/workspace/project/src/spec.ts")
+        ));
 
         // Directory-based test files
-        assert!(is_test_file(root, Path::new("/workspace/project/tests/helper.ts")));
-        assert!(is_test_file(root, Path::new("/workspace/project/test/unit.ts")));
-        assert!(is_test_file(root, Path::new("/workspace/project/src/__tests__/runner.ts")));
+        assert!(is_test_file(
+            root,
+            Path::new("/workspace/project/tests/helper.ts")
+        ));
+        assert!(is_test_file(
+            root,
+            Path::new("/workspace/project/test/unit.ts")
+        ));
+        assert!(is_test_file(
+            root,
+            Path::new("/workspace/project/src/__tests__/runner.ts")
+        ));
 
         // Production files (not tests)
-        assert!(!is_test_file(root, Path::new("/workspace/project/src/index.ts")));
-        assert!(!is_test_file(root, Path::new("/workspace/project/src/main.ts")));
-        assert!(!is_test_file(root, Path::new("/workspace/project/src/testing_utils.ts")));
-        assert!(!is_test_file(root, Path::new("/workspace/project/src/contest.ts")));
+        assert!(!is_test_file(
+            root,
+            Path::new("/workspace/project/src/index.ts")
+        ));
+        assert!(!is_test_file(
+            root,
+            Path::new("/workspace/project/src/main.ts")
+        ));
+        assert!(!is_test_file(
+            root,
+            Path::new("/workspace/project/src/testing_utils.ts")
+        ));
+        assert!(!is_test_file(
+            root,
+            Path::new("/workspace/project/src/contest.ts")
+        ));
     }
 }
-
-

@@ -1,0 +1,90 @@
+src/chain_forwarder.ts
+
+UNREACHABLE
+subject: src/chain_forwarder.ts  (line 1)
+src/chain_forwarder.ts  ←── finding
+
+SINGLE-USE CHAIN
+subject: forwardStep  (line 5)
+startPipeline   (exported, not in chain)
+     │
+     ▼
+forwardStep  ←── finding
+     │
+     ▼
+computeStep
+
+src/exported_chain.ts
+
+UNREACHABLE
+subject: src/exported_chain.ts  (line 1)
+src/exported_chain.ts  ←── finding
+
+EMPTY WRAPPER
+subject: entryRoot  (line 1)
+entryRoot  ←── finding
+     │  return only
+     ▼
+exportedMiddle
+
+EMPTY WRAPPER
+subject: exportedMiddle  (line 5)
+exportedMiddle  ←── finding
+     │  return only
+     ▼
+finalLeaf
+
+src/orders.ts
+
+UNREACHABLE
+subject: src/orders.ts  (line 1)
+src/orders.ts  ←── finding
+
+SINGLE-USE CHAIN
+subject: prepareOrder  (line 9)
+handleOrder   (exported, not in chain)
+     │
+     ▼
+prepareOrder  ←── finding
+     │
+     ▼
+validateAndSave
+     │
+     ▼
+dbSave
+
+EMPTY WRAPPER
+subject: persistOrder  (line 21)
+persistOrder  ←── finding
+     │
+     ▼
+saveOrder
+
+src/test_caller.ts
+
+EMPTY WRAPPER
+subject: productionCaller  (line 1)
+productionCaller  ←── finding
+     │  return only
+     ▼
+helperWithTest
+
+UNREACHABLE
+subject: productionCaller  (line 1)
+productionCaller  ←── finding
+
+FALSE SHARING
+subject: helperWithTest  (line 5)
+tests/check.test.ts
+     │  one consumer group
+     ▼
+helperWithTest  ←── finding
+
+tests/check.test.ts
+
+EMPTY WRAPPER
+subject: testHelper  (line 3)
+testHelper  ←── finding
+     │
+     ▼
+helperWithTest

@@ -26,7 +26,10 @@ pub fn discover(program: &Program) -> HashSet<PathBuf> {
             continue;
         }
         let rel = file.strip_prefix(&program.root).unwrap_or(file);
-        let parent = rel.parent().map(|p| p.to_string_lossy()).unwrap_or_default();
+        let parent = rel
+            .parent()
+            .map(|p| p.to_string_lossy())
+            .unwrap_or_default();
         let stem = file.file_stem().and_then(|s| s.to_str()).unwrap_or("");
         if (parent.is_empty() || parent == "src")
             && (stem == "index" || stem == "main" || stem == "cli")
@@ -189,7 +192,6 @@ fn resolve_candidate(
             }
         }
     }
-
 }
 
 fn try_add_file(path: &Path, program: &Program, entry_points: &mut HashSet<PathBuf>) -> bool {
@@ -215,8 +217,6 @@ fn replace_js_extension(path_str: &str, new_ext: &str) -> String {
     }
     path_str.to_string()
 }
-
-
 
 fn paths_equal(a: &Path, b: &Path) -> bool {
     a == b || a.to_string_lossy() == b.to_string_lossy()
@@ -255,10 +255,18 @@ mod tests {
 
     #[test]
     fn replaces_js_extension_correctly() {
-        assert_eq!(replace_js_extension("./dist/app.js", ".ts"), "./dist/app.ts");
-        assert_eq!(replace_js_extension("./dist/app.mjs", ".mts"), "./dist/app.mts");
-        assert_eq!(replace_js_extension("./dist/app.cjs", ".cts"), "./dist/app.cts");
+        assert_eq!(
+            replace_js_extension("./dist/app.js", ".ts"),
+            "./dist/app.ts"
+        );
+        assert_eq!(
+            replace_js_extension("./dist/app.mjs", ".mts"),
+            "./dist/app.mts"
+        );
+        assert_eq!(
+            replace_js_extension("./dist/app.cjs", ".cts"),
+            "./dist/app.cts"
+        );
         assert_eq!(replace_js_extension("./src/index", ".ts"), "./src/index.ts");
     }
 }
-

@@ -70,9 +70,18 @@ fn unreachable_files_and_entry_points() {
 #[test]
 fn unreachable_files_production_flag_drops_test_roots() {
     let dir = fixture("unreachable");
-    let options = slopgraph::Options { production: true };
+    let options = slopgraph::Options {
+        production: true,
+        ..Default::default()
+    };
     let report = slopgraph::analyze_with_options(&dir, options).unwrap();
     let expected = "\
+src/index.ts
+
+UNREACHABLE
+subject: unusedIndexFn  (line 3)
+unusedIndexFn  ←── finding
+
 src/orphan.ts
 
 UNREACHABLE
@@ -84,6 +93,42 @@ src/test_only.ts
 UNREACHABLE
 subject: src/test_only.ts  (line 1)
 src/test_only.ts  ←── finding
+
+src/used.ts
+
+UNREACHABLE
+subject: deadHelper  (line 5)
+deadHelper  ←── finding
+
+UNREACHABLE
+subject: deadInternal  (line 9)
+deadInternal  ←── finding
+
+EMPTY WRAPPER
+subject: deadChainA  (line 11)
+deadChainA  ←── finding
+     │
+     ▼
+deadChainB
+
+UNREACHABLE
+subject: deadChainA  (line 11)
+deadChainA  ←── finding
+
+UNREACHABLE
+subject: deadChainB  (line 15)
+deadChainB  ←── finding
+
+FALSE SHARING
+subject: testOnlyHelper  (line 17)
+tests/a.test.ts
+     │  one consumer group
+     ▼
+testOnlyHelper  ←── finding
+
+UNREACHABLE
+subject: testOnlyHelper  (line 17)
+testOnlyHelper  ←── finding
 ";
     assert_eq!(report, expected);
 }
@@ -95,10 +140,12 @@ fn test_files_remain_in_graph_under_production() {
     assert!(program.files.iter().any(|f| f.ends_with("tests/a.test.ts")));
     let modules = slopgraph::parse_program(&program).unwrap();
     let graph = slopgraph::ModuleGraph::build(&program, modules).unwrap();
-    assert!(graph.test_files.iter().any(|f| f.ends_with("tests/a.test.ts")));
+    assert!(graph
+        .test_files
+        .iter()
+        .any(|f| f.ends_with("tests/a.test.ts")));
     assert!(graph.modules.keys().any(|f| f.ends_with("tests/a.test.ts")));
 }
-
 
 #[test]
 fn accepts_tsconfig_file_or_directory() {
@@ -108,3 +155,31 @@ fn accepts_tsconfig_file_or_directory() {
     assert_eq!(from_dir, from_file);
 }
 
+#[test]
+fn single_use_chain_default_options() {
+    assert_golden("single-use-chain");
+}
+
+#[test]
+fn single_use_chain_include_exported_flag() {
+    let dir = fixture("single-use-chain");
+    let options = slopgraph::Options {
+        include_exported: true,
+        ..Default::default()
+    };
+    let report = slopgraph::analyze_with_options(&dir, options).unwrap();
+    assert!(report.contains("subject: exportedMiddle"));
+}
+
+#[test]
+fn single_use_chain_test_callers_prevent_chain() {
+    let dir = fixture("single-use-chain");
+    let report = slopgraph::analyze(&dir).unwrap();
+    // helperWithTest is called by productionCaller and testHelper (in-degree 2), so not in single-use chain
+    assert!(!report.contains("SINGLE-USE CHAIN\nsubject: helperWithTest"));
+}
+
+#[test]
+fn near_duplicate_functions() {
+    assert_golden("near-duplicate");
+}

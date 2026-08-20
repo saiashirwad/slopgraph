@@ -178,7 +178,6 @@ impl ModuleGraph {
         })
     }
 
-
     pub fn consumer_group_dir(&self, importer: &Path) -> PathBuf {
         let display = display_path(&self.root, importer);
         display

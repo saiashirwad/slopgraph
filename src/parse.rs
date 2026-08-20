@@ -111,7 +111,6 @@ fn collect_import(decl: &ImportDeclaration<'_>, imports: &mut Vec<ParsedImport>)
     imports.push(ParsedImport { specifier, names });
 }
 
-
 fn collect_export_declaration(
     decl: &ExportDeclaration<'_>,
     source: &str,

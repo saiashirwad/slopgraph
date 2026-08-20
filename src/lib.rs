@@ -6,24 +6,28 @@ mod error;
 mod false_sharing;
 mod finding;
 mod graph;
+mod near_duplicate;
 mod parse;
 mod program;
 mod report;
+mod single_use_chain;
 mod tsgo;
 mod unreachable;
 
+pub use call_graph::{build as build_call_graph, CallGraph, FnNode, TypedEdge};
 pub use error::Error;
 pub use finding::{Evidence, Finding, Location, PathNode, Shape};
 pub use graph::ModuleGraph;
 pub use parse::parse_program;
 pub use program::{display_path, is_js_file, is_program_file, is_test_file, load, Program};
 
-
 /// Options for program analysis.
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct Options {
     /// Remove test roots for reachability analysis.
     pub production: bool,
+    /// Include exported functions in single-use chain detection.
+    pub include_exported: bool,
 }
 
 /// Load one TypeScript program, detect shapes, and render a report with default options.
@@ -43,7 +47,6 @@ pub fn analyze_with_options(
     let findings = detect::run(&graph, &calls, &options);
     Ok(report::render(&findings))
 }
-
 
 /// How many oxc call nodes mapped onto a tsgo `getResolvedSignature` result.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

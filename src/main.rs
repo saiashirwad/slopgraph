@@ -16,12 +16,17 @@ struct Cli {
     /// Remove test roots for unreachable detection
     #[arg(long)]
     production: bool,
+
+    /// Include exported functions in single-use chain detection
+    #[arg(long)]
+    include_exported: bool,
 }
 
 fn main() -> ExitCode {
     let cli = Cli::parse();
     let options = Options {
         production: cli.production,
+        include_exported: cli.include_exported,
     };
     match slopgraph::analyze_with_options(&cli.path, options) {
         Ok(report) => {
@@ -34,4 +39,3 @@ fn main() -> ExitCode {
         }
     }
 }
-
