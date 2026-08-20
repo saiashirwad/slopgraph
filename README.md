@@ -1,92 +1,109 @@
 # Slopgraph
 
-A command-line interface (CLI) tool that detects graph-shaped anti-patterns in TypeScript programs and outputs an analysis report.
+Slopgraph is a command-line tool that detects graph-shaped slop in TypeScript programs and outputs an analysis report.
 
-The tool analyzes a TypeScript program (`.ts` / `.tsx` files defined by a `tsconfig.json` file), builds a module dependency graph and a typed call graph, and detects eight anti-pattern shapes:
-- **UNREACHABLE**
-- **SINGLE-USE CHAIN**
-- **EMPTY WRAPPER**
-- **FALSE SHARING**
-- **NEAR-DUPLICATE**
-- **TRAMP DATA**
-- **TYPE CLONE**
-- **UNREACHING TEST**
+The tool analyzes TypeScript programs (`.ts` and `.tsx` files defined in a `tsconfig.json`). It builds a module dependency graph and a typed call graph to identify structural slop across eight detector shapes.
 
-## Status
+## Features
 
-All eight detectors are fully implemented, verified, and active in the CLI report engine.
+- **Whole-Program Analysis**: Resolves module paths and TypeScript configurations using oxc and TypeScript compiler IPC.
+- **Typed Call Graphs**: Tracks call edges with resolved type signatures to eliminate false positives from syntactic name matches.
+- **Eight Shape Detectors**:
+  - **Unreachable**: Detects files and functions with no path from an entry point.
+  - **Single-Use Chain**: Detects call paths of two or more functions where each function has exactly one caller.
+  - **Empty Wrapper**: Detects functions whose body only forwards to another function.
+  - **False Sharing**: Detects exported symbols imported by only one consumer directory group.
+  - **Near-Duplicate**: Detects distinct functions with matching AST bodies and normalized token sequences.
+  - **Tramp Data**: Detects parameters forwarded through intermediate functions without local use.
+  - **Type Clone**: Detects distinct type declarations with identical fields and types without inheritance.
+  - **Unreaching Test**: Detects test files that import a production module but make zero typed calls to it.
+- **Deterministic Text Reports**: Prints findings grouped by file with ASCII evidence paths.
+- **Read-Only**: Emits findings and evidence for human review without altering source code.
+
+## Installation
+
+Build the project from source using Rust:
+
+```bash
+cargo build --release
+```
+
+The compiled binary is located at `target/release/slopgraph`.
 
 ## Usage
 
+Run `slopgraph` by providing the path to a `tsconfig.json` file or to the directory that contains it:
+
 ```bash
-# Analyze a project directory or tsconfig.json
+# Analyze a project directory
 slopgraph path/to/project
+
+# Analyze a specific tsconfig.json
 slopgraph path/to/tsconfig.json
 
-# Analyze in production mode (remove test roots from reachability analysis)
+# Exclude test files as reachability roots (production mode)
 slopgraph path/to/project --production
 
 # Allow exported functions in single-use chains
 slopgraph path/to/project --include-exported
 
-# Combine options
+# Combine flags
 slopgraph path/to/project --production --include-exported
 ```
 
-### CLI Options
+### CLI Flags
 
-- `<PATH>`: Path to a `tsconfig.json` file, or to the directory that contains it.
-- `--production`: Removes test files and test functions as reachability roots. Functions that are called only by tests are reported as unreachable. Test files remain in the module graph so unreaching test detection continues to operate.
-- `--include-exported`: Allows exported functions to be members of single-use chains. By default, exported functions are excluded from single-use chains because they form public module boundaries.
+| Flag | Description |
+|---|---|
+| `<PATH>` | Path to a `tsconfig.json` file or project directory. |
+| `--production` | Removes test files as entry point roots. Functions called only by tests are reported as unreachable. |
+| `--include-exported` | Allows exported functions to be members of single-use chains. |
 
 ## Detector Shapes
 
-### 1. UNREACHABLE
-Detects files and functions that have no typed-edge call path from any program entry point (or test root).
-- Entry points include `main`, `bin`, and `exports` in `package.json`, plus root and `src/` index, main, or cli files.
-- Under default analysis, test files serve as reachability roots.
-- When `--production` is enabled, test roots are dropped and test-only functions are flagged as unreachable.
-- If an entire file is unreachable, slopgraph reports the file at line 1 and suppresses duplicate findings for functions inside that file.
+### 1. Unreachable
+Detects files and functions that have no path from an entry point.
+- **Entry points**: `main`, `bin`, and `exports` in `package.json`, plus root and `src/` index, main, or CLI files.
+- Under default analysis, test files serve as roots.
+- With `--production`, test roots are dropped, and test-only functions are flagged as unreachable.
+- If an entire file is unreachable, slopgraph reports the file and suppresses duplicate findings for functions inside that file.
 
-### 2. SINGLE-USE CHAIN
-Detects call chains of two or more functions where each function in the chain has an in-degree of exactly one on typed call edges.
-- By default, exported functions are excluded from chains to protect public interfaces.
-- Use `--include-exported` to include exported functions in chain analysis.
-- When an empty forwarding wrapper is part of a single-use chain, it is reported as part of the chain rather than double-reported as an empty wrapper.
+### 2. Single-Use Chain
+Detects paths of two or more functions where each function in the path has an in-degree of exactly 1 on typed edges.
+- Exported functions are excluded by default to protect public interfaces. Use `--include-exported` to include them.
+- If an empty forwarding function is part of a single-use chain, it is reported as part of the chain rather than double-reported as an empty wrapper.
 
-### 3. EMPTY WRAPPER
-Detects forwarding functions whose body only returns or executes a call to another function on a resolved typed edge.
-- Recognizes statement-form calls and direct expression returns.
-- Suppressed when the function is already reported inside a single-use chain.
+### 3. Empty Wrapper
+Detects functions whose body only returns or forwards execution to another function on a typed call edge.
+- Findings are suppressed if the function is already reported in a single-use chain.
 
-### 4. FALSE SHARING
+### 4. False Sharing
 Detects exported symbols that have only one consumer directory group.
-- Emits a finding when all importing modules belong to a single directory (or when the exporter and importer reside in the same directory).
+- Emits a finding when all importing modules belong to a single directory.
 
-### 5. NEAR-DUPLICATE
-Detects pairs of functions with different names whose AST bodies match with at least 0.7 confidence.
+### 5. Near-Duplicate
+Detects pairs of functions with different names whose bodies match with at least 0.7 confidence.
 - Requires function bodies with at least 20 AST nodes.
-- Computes structural similarity with an AST-kind sequence hash and a 50-token window hash (normalizing identifiers to `$ID` and literals to `$LIT`).
+- Compares structures with an AST-kind sequence hash and a 50-token window hash.
 
-### 6. TRAMP DATA
-Detects function parameters that are passed directly into downstream calls on typed edges without any local read operations in the enclosing function.
+### 6. Tramp Data
+Detects parameters passed directly into downstream calls on typed edges without any local read operations.
 
-### 7. TYPE CLONE
-Detects distinct type declarations (interfaces or type aliases) that have at least three identical field names and type annotations without an `extends` or inheritance relationship.
+### 7. Type Clone
+Detects distinct type declarations (interfaces or type aliases) that have at least 3 identical field names and type annotations without an `extends` link.
 
-### 8. UNREACHING TEST
-Detects test files that import a production module but make zero typed calls into any function in that module.
-- Identifies dead or obsolete test imports that do not exercise the imported production code.
+### 8. Unreaching Test
+Detects test files that import a production module but make zero typed calls to any function in that module.
 
-## Report Format
+## Report Output
 
-The report is human-readable text. Findings are grouped by file and sorted deterministically. Each finding card provides:
+Slopgraph prints findings as human-readable text grouped by file and sorted deterministically. Each finding provides:
 1. Target file path
-2. Shape heading in uppercase
+2. Shape name
 3. Finding subject and line number
-4. ASCII evidence path with `←── finding` markers and edge annotations
+4. ASCII evidence path showing call relationships and `←── finding` markers
 
-Example report output:
+### Example Report
 
 ```text
 src/pipeline.ts
@@ -122,15 +139,3 @@ emptyWrapper  ←── finding
      ▼
 targetAction
 ```
-
-Slopgraph produces diagnostic proof for developers to review. It does not modify source code or apply automated patches.
-
-## Documents
-
-- [`.scratch/spec/spec.md`](.scratch/spec/spec.md) — The Version 1 specification
-- [`CONTEXT.md`](CONTEXT.md) — Canonical vocabulary and concepts
-- [`PROJECT.md`](PROJECT.md) — Project architecture and milestone tracker
-
-## Issue Tracker
-
-Issues are tracked on GitHub. Milestones M1 through M7 complete the full Version 1 specification.
