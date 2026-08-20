@@ -23,6 +23,7 @@ pub use finding::{Evidence, Finding, Location, PathNode, Shape};
 pub use graph::ModuleGraph;
 pub use parse::parse_program;
 pub use program::{display_path, is_js_file, is_program_file, is_test_file, load, Program};
+pub use report::{render, render_styled};
 
 /// Options for program analysis.
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
@@ -43,13 +44,23 @@ pub fn analyze_with_options(
     path: impl AsRef<std::path::Path>,
     options: Options,
 ) -> Result<String, Error> {
+    analyze_styled_with_options(path, options, false)
+}
+
+/// Load one TypeScript program, detect shapes with given options, and render a styled report.
+pub fn analyze_styled_with_options(
+    path: impl AsRef<std::path::Path>,
+    options: Options,
+    colored: bool,
+) -> Result<String, Error> {
     let program = program::load(path.as_ref())?;
     let modules = parse::parse_program(&program)?;
     let graph = graph::ModuleGraph::build(&program, modules)?;
     let calls = call_graph::build(&program)?;
     let findings = detect::run(&graph, &calls, &options);
-    Ok(report::render(&findings))
+    Ok(report::render_styled(&findings, colored))
 }
+
 
 /// How many oxc call nodes mapped onto a tsgo `getResolvedSignature` result.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

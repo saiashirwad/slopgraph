@@ -278,3 +278,24 @@ fn test_cli_relative_and_absolute_paths() {
         "Relative path and absolute path should produce identical report"
     );
 }
+
+#[test]
+fn test_cli_color_flags() {
+    let dir = fixture_dir("full-report");
+    let dir_str = dir.to_str().unwrap();
+
+    let (code_always, out_always, _) = run_cli(&[dir_str, "--color", "always"]);
+    assert_eq!(code_always, 0);
+    // ANSI escape sequences must be present when color is forced
+    assert!(out_always.contains("\x1b["));
+
+    let (code_never, out_never, _) = run_cli(&[dir_str, "--color", "never"]);
+    assert_eq!(code_never, 0);
+    assert!(!out_never.contains("\x1b["));
+
+    let (code_auto, out_auto, _) = run_cli(&[dir_str, "--color", "auto"]);
+    assert_eq!(code_auto, 0);
+    // When piped in tests, auto mode defaults to no color
+    assert_eq!(out_auto, out_never);
+}
+

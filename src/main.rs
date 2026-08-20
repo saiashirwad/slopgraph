@@ -1,8 +1,17 @@
+use std::io::IsTerminal;
 use std::path::PathBuf;
 use std::process::ExitCode;
 
-use clap::Parser;
+use clap::{Parser, ValueEnum};
 use slopgraph::Options;
+
+#[derive(ValueEnum, Clone, Copy, Debug, Default, PartialEq, Eq)]
+enum ColorChoice {
+    #[default]
+    Auto,
+    Always,
+    Never,
+}
 
 #[derive(Parser)]
 #[command(
@@ -20,6 +29,20 @@ struct Cli {
     /// Include exported functions in single-use chain detection
     #[arg(long)]
     include_exported: bool,
+
+    /// Control colored terminal output [default: auto]
+    #[arg(long, value_enum, default_value_t = ColorChoice::Auto)]
+    color: ColorChoice,
+}
+
+fn should_color(choice: ColorChoice) -> bool {
+    match choice {
+        ColorChoice::Always => true,
+        ColorChoice::Never => false,
+        ColorChoice::Auto => {
+            std::io::stdout().is_terminal() && std::env::var_os("NO_COLOR").is_none()
+        }
+    }
 }
 
 fn main() -> ExitCode {
@@ -28,7 +51,8 @@ fn main() -> ExitCode {
         production: cli.production,
         include_exported: cli.include_exported,
     };
-    match slopgraph::analyze_with_options(&cli.path, options) {
+    let use_color = should_color(cli.color);
+    match slopgraph::analyze_styled_with_options(&cli.path, options, use_color) {
         Ok(report) => {
             print!("{report}");
             ExitCode::SUCCESS
@@ -39,3 +63,4 @@ fn main() -> ExitCode {
         }
     }
 }
+

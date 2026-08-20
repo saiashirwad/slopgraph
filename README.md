@@ -25,11 +25,15 @@ slopgraph path/to/dir
 
 `--include-exported` lets exported functions sit on a single-use chain. By default they stay off it, so public surfaces are left alone.
 
+`--color [auto|always|never]` controls terminal color styling (default: `auto`).
+
 ```bash
 slopgraph path/to/dir --production
 slopgraph path/to/dir --include-exported
+slopgraph path/to/dir --color always
 slopgraph path/to/dir --production --include-exported
 ```
+
 
 ## Shapes
 
