@@ -13,6 +13,12 @@ pub enum Error {
         #[source]
         source: io::Error,
     },
+    #[error(
+        "tsgo not found; install TypeScript 7 or set SLOPGRAPH_TSGO to the native tsc/tsgo binary"
+    )]
+    TsgoNotFound,
+    #[error("tsgo: {0}")]
+    Tsgo(String),
 }
 
 impl Error {

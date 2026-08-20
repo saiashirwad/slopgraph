@@ -279,7 +279,7 @@ fn name_span_start(name: &ModuleExportName<'_>) -> u32 {
     }
 }
 
-fn line_at(source: &str, offset: u32) -> u32 {
+pub(crate) fn line_at(source: &str, offset: u32) -> u32 {
     let mut off = (offset as usize).min(source.len());
     while off > 0 && !source.is_char_boundary(off) {
         off -= 1;

@@ -6,3 +6,12 @@ src/other.ts
      │  one consumer group
      ▼
 app  ←── finding
+
+src/other.ts
+
+EMPTY WRAPPER
+subject: other  (line 3)
+other  ←── finding
+     │  return only
+     ▼
+app

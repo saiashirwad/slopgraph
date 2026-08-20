@@ -1,0 +1,29 @@
+src/wrap.ts
+
+EMPTY WRAPPER
+subject: persistOrder  (line 5)
+persistOrder  ←── finding
+     │  return only
+     ▼
+saveOrder
+
+EMPTY WRAPPER
+subject: asPersist  (line 9)
+asPersist  ←── finding
+     │  return only
+     ▼
+saveOrder
+
+EMPTY WRAPPER
+subject: fireAndForget  (line 13)
+fireAndForget  ←── finding
+     │
+     ▼
+saveOrder
+
+EMPTY WRAPPER
+subject: exportedWrap  (line 17)
+exportedWrap  ←── finding
+     │  return only
+     ▼
+saveOrder

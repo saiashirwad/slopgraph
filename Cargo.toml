@@ -8,7 +8,9 @@ repository = "https://github.com/saiashirwad/slopgraph"
 
 [dependencies]
 clap = { version = "4", features = ["derive"] }
-oxc = "0.146.0"
+oxc = { version = "0.146.0", features = ["ast_visit"] }
 oxc_resolver = "11"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
 thiserror = "2"
 walkdir = "2"

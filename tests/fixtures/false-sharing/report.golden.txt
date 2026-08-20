@@ -1,3 +1,12 @@
+src/catalog/item.ts
+
+EMPTY WRAPPER
+subject: item  (line 3)
+item  ←── finding
+     │  return only
+     ▼
+nextId
+
 src/lib/format.ts
 
 FALSE SHARING
@@ -15,3 +24,12 @@ src/orders/list.ts
      │  one consumer group
      ▼
 createOrder  ←── finding
+
+src/orders/list.ts
+
+EMPTY WRAPPER
+subject: listOrders  (line 3)
+listOrders  ←── finding
+     │  return only
+     ▼
+createOrder

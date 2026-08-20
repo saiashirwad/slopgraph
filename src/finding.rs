@@ -3,12 +3,14 @@ use std::path::PathBuf;
 /// Canonical shape name from CONTEXT.md.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Shape {
+    EmptyWrapper,
     FalseSharing,
 }
 
 impl Shape {
     pub fn heading(self) -> &'static str {
         match self {
+            Shape::EmptyWrapper => "EMPTY WRAPPER",
             Shape::FalseSharing => "FALSE SHARING",
         }
     }

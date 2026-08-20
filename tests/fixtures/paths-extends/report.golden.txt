@@ -1,3 +1,12 @@
+src/checkout/pay.ts
+
+EMPTY WRAPPER
+subject: pay  (line 3)
+pay  ←── finding
+     │  return only
+     ▼
+formatMoney
+
 src/lib/money.ts
 
 FALSE SHARING

@@ -58,6 +58,11 @@ fn project_references_are_ignored() {
 }
 
 #[test]
+fn empty_wrapper_three_forward_forms() {
+    assert_golden("empty-wrapper");
+}
+
+#[test]
 fn accepts_tsconfig_file_or_directory() {
     let dir = fixture("false-sharing");
     let from_dir = slopgraph::analyze(&dir).unwrap();

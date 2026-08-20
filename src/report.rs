@@ -37,30 +37,15 @@ pub fn render(findings: &[Finding]) -> String {
 
 fn render_evidence(out: &mut String, finding: &Finding) {
     let Evidence::Path { nodes } = &finding.evidence;
-    if nodes.is_empty() {
-        return;
-    }
-
-    let mut i = 0;
-    while i < nodes.len() {
-        let node = &nodes[i];
+    for (i, node) in nodes.iter().enumerate() {
+        let _ = write!(out, "{}", node.label);
         if node.is_subject {
-            let _ = write!(out, "{}", node.label);
             let _ = writeln!(out, "  ←── finding");
-            i += 1;
-            continue;
+        } else {
+            out.push('\n');
         }
-
-        let _ = writeln!(out, "{}", node.label);
-        let mut j = i + 1;
-        while j < nodes.len() && !nodes[j].is_subject {
-            let _ = writeln!(out, "{}", nodes[j].label);
-            j += 1;
-        }
-
-        let annotation = node.annotation.as_deref();
-        if j < nodes.len() {
-            match annotation {
+        if i + 1 < nodes.len() {
+            match node.annotation.as_deref() {
                 Some(text) => {
                     let _ = writeln!(out, "     │  {text}");
                     let _ = writeln!(out, "     ▼");
@@ -71,6 +56,5 @@ fn render_evidence(out: &mut String, finding: &Finding) {
                 }
             }
         }
-        i = j;
     }
 }
