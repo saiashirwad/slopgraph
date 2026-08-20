@@ -1,0 +1,8 @@
+src/app.ts
+
+FALSE SHARING
+subject: app  (line 3)
+src/other.ts
+     │  one consumer group
+     ▼
+app  ←── finding

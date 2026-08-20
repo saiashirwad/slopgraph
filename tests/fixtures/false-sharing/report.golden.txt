@@ -1,0 +1,17 @@
+src/lib/format.ts
+
+FALSE SHARING
+subject: formatPrice  (line 1)
+src/orders/create.ts
+     │  one consumer group
+     ▼
+formatPrice  ←── finding
+
+src/orders/create.ts
+
+FALSE SHARING
+subject: createOrder  (line 4)
+src/orders/list.ts
+     │  one consumer group
+     ▼
+createOrder  ←── finding

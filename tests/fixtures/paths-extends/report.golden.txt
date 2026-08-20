@@ -1,0 +1,8 @@
+src/lib/money.ts
+
+FALSE SHARING
+subject: formatMoney  (line 1)
+src/checkout/pay.ts
+     │  one consumer group
+     ▼
+formatMoney  ←── finding

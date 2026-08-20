@@ -6,7 +6,16 @@ The tool analyzes one TypeScript program (`.ts` / `.tsx` from one `tsconfig.json
 
 ## Status
 
-Planning complete. The version 1 specification is at [`.scratch/spec/spec.md`](.scratch/spec/spec.md). Implementation has not started.
+Version 1 is specified at [`.scratch/spec/spec.md`](.scratch/spec/spec.md). The CLI loads one TypeScript program and reports **false sharing**. Other shapes are not implemented yet.
+
+## Usage
+
+```
+slopgraph path/to/tsconfig.json
+slopgraph path/to/project
+```
+
+The path is a `tsconfig.json`, or the directory that contains it. The report is human text: findings grouped by file, evidence as an ASCII path. The tool does not change code.
 
 ## Documents
 
