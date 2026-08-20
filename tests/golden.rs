@@ -63,9 +63,48 @@ fn empty_wrapper_three_forward_forms() {
 }
 
 #[test]
+fn unreachable_files_and_entry_points() {
+    assert_golden("unreachable");
+}
+
+#[test]
+fn unreachable_files_production_flag_drops_test_roots() {
+    let dir = fixture("unreachable");
+    let options = slopgraph::Options { production: true };
+    let report = slopgraph::analyze_with_options(&dir, options).unwrap();
+    let expected = "\
+src/orphan.ts
+
+UNREACHABLE
+subject: src/orphan.ts  (line 1)
+src/orphan.ts  ←── finding
+
+src/test_only.ts
+
+UNREACHABLE
+subject: src/test_only.ts  (line 1)
+src/test_only.ts  ←── finding
+";
+    assert_eq!(report, expected);
+}
+
+#[test]
+fn test_files_remain_in_graph_under_production() {
+    let dir = fixture("unreachable");
+    let program = slopgraph::load(&dir).unwrap();
+    assert!(program.files.iter().any(|f| f.ends_with("tests/a.test.ts")));
+    let modules = slopgraph::parse_program(&program).unwrap();
+    let graph = slopgraph::ModuleGraph::build(&program, modules).unwrap();
+    assert!(graph.test_files.iter().any(|f| f.ends_with("tests/a.test.ts")));
+    assert!(graph.modules.keys().any(|f| f.ends_with("tests/a.test.ts")));
+}
+
+
+#[test]
 fn accepts_tsconfig_file_or_directory() {
     let dir = fixture("false-sharing");
     let from_dir = slopgraph::analyze(&dir).unwrap();
     let from_file = slopgraph::analyze(dir.join("tsconfig.json")).unwrap();
     assert_eq!(from_dir, from_file);
 }
+

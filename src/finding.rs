@@ -5,6 +5,7 @@ use std::path::PathBuf;
 pub enum Shape {
     EmptyWrapper,
     FalseSharing,
+    Unreachable,
 }
 
 impl Shape {
@@ -12,9 +13,11 @@ impl Shape {
         match self {
             Shape::EmptyWrapper => "EMPTY WRAPPER",
             Shape::FalseSharing => "FALSE SHARING",
+            Shape::Unreachable => "UNREACHABLE",
         }
     }
 }
+
 
 /// File and span of the subject.
 #[derive(Debug, Clone, PartialEq, Eq)]

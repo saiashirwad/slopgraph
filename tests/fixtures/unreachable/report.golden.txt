@@ -1,0 +1,5 @@
+src/orphan.ts
+
+UNREACHABLE
+subject: src/orphan.ts  (line 1)
+src/orphan.ts  ←── finding

@@ -92,27 +92,25 @@ fn collect_statement(
 
 fn collect_import(decl: &ImportDeclaration<'_>, imports: &mut Vec<ParsedImport>) {
     let specifier = decl.source.value.to_string();
-    let Some(specifiers) = &decl.specifiers else {
-        return;
-    };
     let mut names = Vec::new();
-    for spec in specifiers {
-        match spec {
-            ImportDeclarationSpecifier::ImportSpecifier(s) => {
-                names.push(ImportedName::Named(export_name(&s.imported)));
-            }
-            ImportDeclarationSpecifier::ImportDefaultSpecifier(_) => {
-                names.push(ImportedName::Default);
-            }
-            ImportDeclarationSpecifier::ImportNamespaceSpecifier(_) => {
-                names.push(ImportedName::Namespace);
+    if let Some(specifiers) = &decl.specifiers {
+        for spec in specifiers {
+            match spec {
+                ImportDeclarationSpecifier::ImportSpecifier(s) => {
+                    names.push(ImportedName::Named(export_name(&s.imported)));
+                }
+                ImportDeclarationSpecifier::ImportDefaultSpecifier(_) => {
+                    names.push(ImportedName::Default);
+                }
+                ImportDeclarationSpecifier::ImportNamespaceSpecifier(_) => {
+                    names.push(ImportedName::Namespace);
+                }
             }
         }
     }
-    if !names.is_empty() {
-        imports.push(ParsedImport { specifier, names });
-    }
+    imports.push(ParsedImport { specifier, names });
 }
+
 
 fn collect_export_declaration(
     decl: &ExportDeclaration<'_>,

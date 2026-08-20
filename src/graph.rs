@@ -7,13 +7,19 @@ use oxc_resolver::{
 
 use crate::error::Error;
 use crate::parse::{ImportedName, ParsedExport, ParsedModule};
-use crate::program::{display_path, is_js_file, is_program_file, Program};
+use crate::program::{display_path, is_js_file, is_program_file, is_test_file, Program};
 
 pub struct ModuleGraph {
     pub root: PathBuf,
     pub modules: HashMap<PathBuf, Module>,
     /// (exporter abs path, export name) -> importer abs paths
     pub consumers: HashMap<(PathBuf, String), Vec<PathBuf>>,
+    /// File-level dependencies: importer abs path -> imported abs paths
+    pub file_dependencies: HashMap<PathBuf, Vec<PathBuf>>,
+    /// Discovered entry points (package.json fields + root/src index/main/cli files)
+    pub entry_points: HashSet<PathBuf>,
+    /// Files identified as tests by the test-file predicate
+    pub test_files: HashSet<PathBuf>,
 }
 
 pub struct Module {
@@ -62,6 +68,16 @@ impl ModuleGraph {
         let mut modules = HashMap::new();
         let mut pending_star: Vec<(PathBuf, PathBuf)> = Vec::new();
         let mut consumers: HashMap<(PathBuf, String), Vec<PathBuf>> = HashMap::new();
+        let mut file_dependencies: HashMap<PathBuf, Vec<PathBuf>> = HashMap::new();
+        let mut test_files = HashSet::new();
+
+        for file in &program.files {
+            if is_test_file(&program.root, file) {
+                test_files.insert(file.clone());
+            }
+        }
+
+        let entry_points = crate::entry::discover(program);
 
         for module in &parsed {
             let display = display_path(&program.root, &module.abs);
@@ -95,6 +111,11 @@ impl ModuleGraph {
                     continue;
                 };
 
+                file_dependencies
+                    .entry(module.abs.clone())
+                    .or_default()
+                    .push(target.clone());
+
                 apply_import(
                     &module.abs,
                     &target,
@@ -107,6 +128,11 @@ impl ModuleGraph {
         }
 
         for (importer, target) in pending_star {
+            file_dependencies
+                .entry(importer.clone())
+                .or_default()
+                .push(target.clone());
+
             let reexports: Vec<ParsedExport> = match modules.get(&target) {
                 Some(source) => source
                     .exports
@@ -137,12 +163,21 @@ impl ModuleGraph {
             list.dedup();
         }
 
+        for list in file_dependencies.values_mut() {
+            list.sort();
+            list.dedup();
+        }
+
         Ok(ModuleGraph {
             root: program.root.clone(),
             modules,
             consumers,
+            file_dependencies,
+            entry_points,
+            test_files,
         })
     }
+
 
     pub fn consumer_group_dir(&self, importer: &Path) -> PathBuf {
         let display = display_path(&self.root, importer);

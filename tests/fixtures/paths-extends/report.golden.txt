@@ -1,5 +1,9 @@
 src/checkout/pay.ts
 
+UNREACHABLE
+subject: src/checkout/pay.ts  (line 1)
+src/checkout/pay.ts  ←── finding
+
 EMPTY WRAPPER
 subject: pay  (line 3)
 pay  ←── finding
@@ -8,6 +12,10 @@ pay  ←── finding
 formatMoney
 
 src/lib/money.ts
+
+UNREACHABLE
+subject: src/lib/money.ts  (line 1)
+src/lib/money.ts  ←── finding
 
 FALSE SHARING
 subject: formatMoney  (line 1)

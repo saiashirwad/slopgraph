@@ -181,7 +181,7 @@ pub fn is_program_file(path: &Path) -> bool {
     }
     matches!(
         path.extension().and_then(|e| e.to_str()),
-        Some("ts") | Some("tsx")
+        Some("ts") | Some("tsx") | Some("mts") | Some("cts")
     )
 }
 
@@ -190,6 +190,47 @@ pub fn is_js_file(path: &Path) -> bool {
         path.extension().and_then(|e| e.to_str()),
         Some("js") | Some("jsx") | Some("mjs") | Some("cjs")
     )
+}
+
+/// Test-file predicate: determines whether a program file is a test file.
+///
+/// Reused by unreachable file/function detector and unreaching-test detector.
+/// A file is considered a test file if:
+/// 1. Its file name matches `*.test.ts`, `*.test.tsx`, `*.test.mts`, `*.test.cts`,
+///    `*.spec.ts`, `*.spec.tsx`, `*.spec.mts`, `*.spec.cts`,
+///    `test.ts`, `test.tsx`, `spec.ts`, or `spec.tsx`.
+/// 2. Any directory component in the relative path from the program root is
+///    `__tests__`, `tests`, or `test`.
+pub fn is_test_file(root: &Path, file: &Path) -> bool {
+    let name = file.file_name().and_then(|n| n.to_str()).unwrap_or("");
+    if name.ends_with(".test.ts")
+        || name.ends_with(".test.tsx")
+        || name.ends_with(".test.mts")
+        || name.ends_with(".test.cts")
+        || name.ends_with(".spec.ts")
+        || name.ends_with(".spec.tsx")
+        || name.ends_with(".spec.mts")
+        || name.ends_with(".spec.cts")
+        || name == "test.ts"
+        || name == "test.tsx"
+        || name == "spec.ts"
+        || name == "spec.tsx"
+    {
+        return true;
+    }
+    let rel = file.strip_prefix(root).unwrap_or(file);
+    if let Some(parent) = rel.parent() {
+        for comp in parent.components() {
+            if let std::path::Component::Normal(os_str) = comp {
+                if let Some(s) = os_str.to_str() {
+                    if s == "__tests__" || s == "tests" || s == "test" {
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+    false
 }
 
 pub fn display_path(root: &Path, file: &Path) -> PathBuf {
@@ -201,3 +242,37 @@ pub fn display_path(root: &Path, file: &Path) -> PathBuf {
         .join("/")
         .into()
 }
+
+#[cfg(test)]
+mod tests {
+    use std::path::Path;
+    use super::*;
+
+    #[test]
+    fn test_file_predicate_identifies_tests() {
+        let root = Path::new("/workspace/project");
+
+        // Name-based test files
+        assert!(is_test_file(root, Path::new("/workspace/project/src/app.test.ts")));
+        assert!(is_test_file(root, Path::new("/workspace/project/src/app.spec.ts")));
+        assert!(is_test_file(root, Path::new("/workspace/project/src/app.test.tsx")));
+        assert!(is_test_file(root, Path::new("/workspace/project/src/app.spec.tsx")));
+        assert!(is_test_file(root, Path::new("/workspace/project/src/app.test.mts")));
+        assert!(is_test_file(root, Path::new("/workspace/project/src/app.test.cts")));
+        assert!(is_test_file(root, Path::new("/workspace/project/src/test.ts")));
+        assert!(is_test_file(root, Path::new("/workspace/project/src/spec.ts")));
+
+        // Directory-based test files
+        assert!(is_test_file(root, Path::new("/workspace/project/tests/helper.ts")));
+        assert!(is_test_file(root, Path::new("/workspace/project/test/unit.ts")));
+        assert!(is_test_file(root, Path::new("/workspace/project/src/__tests__/runner.ts")));
+
+        // Production files (not tests)
+        assert!(!is_test_file(root, Path::new("/workspace/project/src/index.ts")));
+        assert!(!is_test_file(root, Path::new("/workspace/project/src/main.ts")));
+        assert!(!is_test_file(root, Path::new("/workspace/project/src/testing_utils.ts")));
+        assert!(!is_test_file(root, Path::new("/workspace/project/src/contest.ts")));
+    }
+}
+
+

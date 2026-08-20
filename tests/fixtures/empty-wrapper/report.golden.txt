@@ -1,5 +1,9 @@
 src/wrap.ts
 
+UNREACHABLE
+subject: src/wrap.ts  (line 1)
+src/wrap.ts  ←── finding
+
 EMPTY WRAPPER
 subject: persistOrder  (line 5)
 persistOrder  ←── finding

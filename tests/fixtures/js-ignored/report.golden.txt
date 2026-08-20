@@ -1,5 +1,9 @@
 src/app.ts
 
+UNREACHABLE
+subject: src/app.ts  (line 1)
+src/app.ts  ←── finding
+
 FALSE SHARING
 subject: app  (line 3)
 src/other.ts
@@ -8,6 +12,10 @@ src/other.ts
 app  ←── finding
 
 src/other.ts
+
+UNREACHABLE
+subject: src/other.ts  (line 1)
+src/other.ts  ←── finding
 
 EMPTY WRAPPER
 subject: other  (line 3)

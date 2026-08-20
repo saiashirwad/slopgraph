@@ -2,6 +2,7 @@ use std::path::PathBuf;
 use std::process::ExitCode;
 
 use clap::Parser;
+use slopgraph::Options;
 
 #[derive(Parser)]
 #[command(
@@ -11,11 +12,18 @@ use clap::Parser;
 struct Cli {
     /// Path to a tsconfig.json, or to the directory that contains it
     path: PathBuf,
+
+    /// Remove test roots for unreachable detection
+    #[arg(long)]
+    production: bool,
 }
 
 fn main() -> ExitCode {
     let cli = Cli::parse();
-    match slopgraph::analyze(&cli.path) {
+    let options = Options {
+        production: cli.production,
+    };
+    match slopgraph::analyze_with_options(&cli.path, options) {
         Ok(report) => {
             print!("{report}");
             ExitCode::SUCCESS
@@ -26,3 +34,4 @@ fn main() -> ExitCode {
         }
     }
 }
+

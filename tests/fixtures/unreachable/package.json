@@ -1,0 +1,11 @@
+{
+  "name": "unreachable-fixture",
+  "main": "./src/pkg_entry.ts",
+  "bin": {
+    "tool": "./src/bin_entry.ts"
+  },
+  "exports": {
+    ".": "./src/pkg_entry.ts",
+    "./feature": "./src/exports_entry.ts"
+  }
+}

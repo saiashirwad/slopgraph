@@ -1,5 +1,9 @@
 src/catalog/item.ts
 
+UNREACHABLE
+subject: src/catalog/item.ts  (line 1)
+src/catalog/item.ts  ←── finding
+
 EMPTY WRAPPER
 subject: item  (line 3)
 item  ←── finding
@@ -9,6 +13,10 @@ nextId
 
 src/lib/format.ts
 
+UNREACHABLE
+subject: src/lib/format.ts  (line 1)
+src/lib/format.ts  ←── finding
+
 FALSE SHARING
 subject: formatPrice  (line 1)
 src/orders/create.ts
@@ -16,7 +24,17 @@ src/orders/create.ts
      ▼
 formatPrice  ←── finding
 
+src/lib/unused.ts
+
+UNREACHABLE
+subject: src/lib/unused.ts  (line 1)
+src/lib/unused.ts  ←── finding
+
 src/orders/create.ts
+
+UNREACHABLE
+subject: src/orders/create.ts  (line 1)
+src/orders/create.ts  ←── finding
 
 FALSE SHARING
 subject: createOrder  (line 4)
@@ -27,9 +45,19 @@ createOrder  ←── finding
 
 src/orders/list.ts
 
+UNREACHABLE
+subject: src/orders/list.ts  (line 1)
+src/orders/list.ts  ←── finding
+
 EMPTY WRAPPER
 subject: listOrders  (line 3)
 listOrders  ←── finding
      │  return only
      ▼
 createOrder
+
+src/shared/id.ts
+
+UNREACHABLE
+subject: src/shared/id.ts  (line 1)
+src/shared/id.ts  ←── finding
